@@ -1,7 +1,18 @@
 #include <stdio.h>
 #include <iostream>
+#include <iostream>
+#include <fstream>
 using namespace std;
 int main(int argc, const char* argv[]) {
+	ifstream myfile;
+	  myfile.open (argv[1]);
+string line;
+while ( getline (myfile,line,' ') )
+    {
+      cout << line << '\n';
+    }
+	  myfile.close();
+
 	while (true) {
 
 		cout << "\nPlease choose one of the following commands:\n";
