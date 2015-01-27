@@ -5,7 +5,7 @@
  *      Author: brentmitchell
  */
 
-#include <List.h>
+#include "List.h"
 
 List::List() {
 	head = new Node("", NULL);
