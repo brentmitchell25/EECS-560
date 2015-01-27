@@ -7,7 +7,7 @@
 
 #include <List.h>
 
-List::List()  {
+List::List() {
 	head = new Node("", NULL);
 }
 
@@ -22,35 +22,35 @@ void List::insertHelper(std::string data, List::Node* n) {
 		n->next = new Node(data, NULL);
 	} else {
 		n = n->next;
-		insertHelper(data,n);
+		insertHelper(data, n);
 	}
 }
 
-List::Node* List::eraseHelper(std::string data,List::Node* n) {
+List::Node* List::eraseHelper(std::string data, List::Node* n) {
 	if (n == NULL) {
 		return NULL;
-	} else if (n->data == data){
+	} else if (n->data == data) {
 		Node* temp = n->next;
 		delete n;
 		return temp;
 	}
-	n->next = eraseHelper(data,n->next);
+	n->next = eraseHelper(data, n->next);
 
 	return n;
 }
 
 List::Node* List::findHelper(std::string data, List::Node* n) {
-	if(n == NULL) {
+	if (n == NULL) {
 		return NULL;
-	} else if(n->data == data) {
+	} else if (n->data == data) {
 		return n;
 	}
 
-	return findHelper(data,n->next);
+	return findHelper(data, n->next);
 }
 
 void List::insert(std::string data) {
-	insertHelper(data,head);
+	insertHelper(data, head);
 }
 
 bool List::isEmpty() {
@@ -61,7 +61,7 @@ bool List::isEmpty() {
 }
 
 void List::erase(std::string data) {
-	head = eraseHelper(data,head);
+	head = eraseHelper(data, head);
 }
 
 void List::print() {
@@ -75,5 +75,5 @@ void List::print() {
 }
 
 List::Node* List::find(std::string data) {
-	return findHelper(data,head);
+	return findHelper(data, head);
 }
