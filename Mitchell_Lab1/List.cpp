@@ -6,18 +6,26 @@
  */
 
 #include "List.h"
+#include <string>
 
 List::List() {
-	head = new Node("", NULL);
+
+	head = NULL;
 }
 
 List::~List() {
+	Node* iterator = head;
+	while (iterator != NULL) {
+		Node* oldNode = iterator;
+		iterator = iterator->next;
+		delete oldNode;
+	}
 	delete head;
 }
 
 void List::insertHelper(std::string data, List::Node* n) {
 	if (n == NULL) {
-		n->data = data;
+		n = new Node(data, NULL);
 	} else if (n->next == NULL) {
 		n->next = new Node(data, NULL);
 	} else {
@@ -26,17 +34,22 @@ void List::insertHelper(std::string data, List::Node* n) {
 	}
 }
 
-List::Node* List::eraseHelper(std::string data, List::Node* n) {
-	if (n == NULL) {
-		return NULL;
-	} else if (n->data == data) {
-		Node* temp = n->next;
-		delete n;
-		return temp;
+bool List::eraseHelper(std::string data, List::Node*& n) {
+	if (n == NULL) { // If list is empty
+		return false;
+	} else if (n->data == data) { // If item is at head of list
+		Node* delNode = n;
+		n = delNode->next;
+		delete delNode;
+		return true;
+	} else if (n->next != NULL && n->next->data == data) { // Rearrange nodes and delete node
+		Node* delNode = n->next;
+		n->next = delNode->next;
+		delete delNode;
+		return true;
 	}
-	n->next = eraseHelper(data, n->next);
 
-	return n;
+	return eraseHelper(data, n->next); // Recurse
 }
 
 List::Node* List::findHelper(std::string data, List::Node* n) {
@@ -50,23 +63,24 @@ List::Node* List::findHelper(std::string data, List::Node* n) {
 }
 
 void List::insert(std::string data) {
-	insertHelper(data, head);
+	if (head == NULL)
+		head = new Node(data, NULL);
+	else
+		insertHelper(data, head);
+
 }
 
 bool List::isEmpty() {
-	if (head == NULL) {
-		return true;
-	}
-	return false;
+	return head == NULL;
 }
 
-void List::erase(std::string data) {
-	head = eraseHelper(data, head);
+bool List::erase(std::string data) {
+	return eraseHelper(data, head);
 }
 
 void List::print() {
 	Node* iterator = head;
-	std::cout << "List: ";
+	std::cout << "\nList: ";
 	while (iterator != NULL) {
 		std::cout << iterator->data << " ";
 		iterator = iterator->next;

@@ -22,7 +22,7 @@ private:
 	Node *head;
 
 	void insertHelper(std::string data, Node* n);
-	Node* eraseHelper(std::string data, Node* n);
+	bool eraseHelper(std::string data, Node*& n);
 	Node* findHelper(std::string data, Node* n);
 
 public:
@@ -30,7 +30,7 @@ public:
 	virtual ~List();
 	void insert(std::string data);
 	bool isEmpty();
-	void erase(std::string data);
+	bool erase(std::string data);
 	void print();
 	Node* find(std::string data);
 };

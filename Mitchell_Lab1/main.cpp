@@ -6,7 +6,10 @@
 using namespace std;
 int main(int argc, const char* argv[]) {
 	ifstream myfile;
-	myfile.open(argv[1]);
+	if(argc > 1)
+		myfile.open(argv[1]);
+	else
+		myfile.open("data.txt");
 	string word;
 	List l;
 	while (getline(myfile, word, ' ')) {
@@ -32,13 +35,15 @@ int main(int argc, const char* argv[]) {
 		} else if (choice == 2) {
 			cout << "\nChoose a number to be deleted to the list:\n\n> ";
 			cin >> number;
-			l.erase(number);
+			if (!l.erase(number)) {
+				cout << "\nThe number entered is not in the list.";
+			}
 		} else if (choice == 3) {
 			l.print();
 		} else if (choice == 4) {
 			return 0;
 		}
 
-		cout << "\n--------------------\n";
+		cout << "\n\n---------------------------------------\n";
 	}
 }
