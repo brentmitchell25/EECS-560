@@ -6,6 +6,8 @@
 using namespace std;
 int main(int argc, const char* argv[]) {
 	ifstream myfile;
+
+	// If no command line argument, open hard coded file
 	if(argc > 1)
 		myfile.open(argv[1]);
 	else
@@ -40,7 +42,7 @@ int main(int argc, const char* argv[]) {
 			}
 		} else if (choice == 3) {
 			l.print();
-		} else if (choice == 4) {
+		} else {
 			return 0;
 		}
 

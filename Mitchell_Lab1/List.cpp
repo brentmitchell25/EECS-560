@@ -26,7 +26,7 @@ List::~List() {
 void List::insertHelper(std::string data, List::Node* n) {
 	if (n == NULL) {
 		n = new Node(data, NULL);
-	} else if (n->next == NULL) {
+	} else if (n->next == NULL) { // Inserts if following node is empty
 		n->next = new Node(data, NULL);
 	} else {
 		n = n->next;
@@ -63,7 +63,7 @@ List::Node* List::findHelper(std::string data, List::Node* n) {
 }
 
 void List::insert(std::string data) {
-	if (head == NULL)
+	if (head == NULL) // Add to head if list is empty
 		head = new Node(data, NULL);
 	else
 		insertHelper(data, head);
