@@ -20,7 +20,7 @@ List::~List() {
 		iterator = iterator->next;
 		delete oldNode;
 	}
-	delete head;
+	head = NULL;
 }
 
 void List::insertHelper(std::string data, List::Node* n) {
