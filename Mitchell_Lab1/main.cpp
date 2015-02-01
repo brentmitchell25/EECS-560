@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <sstream>
 
 using namespace std;
 int main(int argc, const char* argv[]) {
@@ -14,8 +16,14 @@ int main(int argc, const char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 	List l;
-	while (getline(myfile, word, ' ')) {
-		l.insert(word);
+	
+	// Was having issue parsing numbers due to hidden charcters
+	// Convert to int and back to string removed this issue
+	while (getline(myfile, word, ' ') && !myfile.eof()) {
+	  int value = atoi(word.c_str());
+	  ostringstream ss;
+	  ss << value;
+	  l.insert(ss.str());
 	}
 	myfile.close();
 

@@ -5,4 +5,4 @@ main.o: main.cpp
 List.o: List.cpp
 	g++ -c List.cpp
 clean:
-	rm -f *o MitchellLab1
+	rm -f *o *~ MitchellLab1
