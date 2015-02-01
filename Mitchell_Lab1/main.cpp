@@ -17,13 +17,11 @@ int main(int argc, const char* argv[]) {
 	string word;
 	List l;
 	
-	// Was having issue parsing numbers due to hidden charcters
-	// Convert to int and back to string removed this issue
-	while (getline(myfile, word, ' ') && !myfile.eof()) {
-	  int value = atoi(word.c_str());
-	  ostringstream ss;
-	  ss << value;
-	  l.insert(ss.str());
+	// This assumes there are no hidden charcters at end of file
+	// Found some text editors add hidden characters, which results
+	// in the last item in the list not be able to be deleted.
+	while (getline(myfile, word, ' ') && !word.empty()) {
+	  l.insert(word);
 	}
 	myfile.close();
 

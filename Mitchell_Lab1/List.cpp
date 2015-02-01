@@ -36,7 +36,6 @@ void List::insertHelper(std::string data, List::Node* n) {
 
 bool List::eraseHelper(std::string data, List::Node*& n) {
 	if (n == NULL) { // If list is empty
-	  std::cout << "HERE";
 		return false;
 	} else if (n->data == data) { // If item is at head of list
 		Node* delNode = n;
