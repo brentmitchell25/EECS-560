@@ -10,9 +10,9 @@
 HashTable::HashTable(int size) :
 		m(size) {
 	// TODO Auto-generated constructor stub
-	table = new List[m];
+	table = new List<int>[m];
 	for(int i = 0; i < m; i++) {
-		List l;
+		List<int> l;
 		table[hash(i)] = l;
 	}
 }
@@ -29,13 +29,13 @@ bool HashTable::find(int num) {
 	return table[hash(num)].find(num);
 }
 
-void HashTable::insert(int x) {
-	if(!find(x))
-		table[hash(x)].insert(x);
+void HashTable::insert(int num) {
+	if(!find(num))
+		table[hash(num)].insert(num);
 }
 
-bool HashTable::remove(int x) {
-	return table[hash(x)].erase(x);
+bool HashTable::remove(int num) {
+	return table[hash(num)].erase(num);
 }
 void HashTable::print() {
 	std::cout << std::endl;
