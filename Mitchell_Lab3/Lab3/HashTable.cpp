@@ -7,7 +7,7 @@
 
 #include "HashTable.h"
 #include <cmath>
-
+#define NO_DATA -1
 HashTable::HashTable(int size) :
 		m(size) {
 	// TODO Auto-generated constructor stub
@@ -37,8 +37,8 @@ void HashTable::insert(int num) {
 	if (!contains(num)) {
 		Bucket b(num);
 		for (int i = 0; i < m; i++) {
-			int hx = hash(num + pow(i,2));
-			if (table[hx].data == noData) {
+		  int hx = hash(hash(num) + pow(i,2));
+			if (table[hx].data == NO_DATA) {
 				table[hx] = b;
 				return;
 			}
@@ -51,7 +51,7 @@ bool HashTable::remove(int num) {
 	for (int i = 0; i < m; i++) {
 			int hx = hash(num + pow(i,2));
 			if (table[hx].data == num) {
-				table[hx].data = noData;
+				table[hx].data = NO_DATA;
 				table[hx].flag = true;
 				return true;
 			}
@@ -68,7 +68,7 @@ void HashTable::print() {
 
 bool HashTable::isFull() {
 	for(int i = 0; i < m; i++) {
-		if(table[i].data == noData)
+		if(table[i].data == NO_DATA)
 			return false;
 	}
 	return true;

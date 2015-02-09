@@ -12,7 +12,6 @@
 class HashTable {
 private:
 	int m;
-	const static int noData = -1;
 	struct Bucket {
 		int data;
 		bool flag;
