@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "BinarySearchTree.h"
 #include <stdlib.h>
+
+#include "BTree.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -14,8 +15,7 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	BinarySearchTree<int>* bst = new BinarySearchTree<int>();
-	;
+	BTree<int>* bst = new BTree<int>();
 
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
@@ -30,10 +30,8 @@ int main(int argc, char* argv[]) {
 		cout << "\n2 - remove\n";
 		cout << "\n3 - deletemin\n";
 		cout << "\n4 - deletemax\n";
-		cout << "\n5 - preorder\n";
-		cout << "\n6 - inorder\n";
-		cout << "\n7 - levelorder\n";
-		cout << "\n8 - exit\n\n> ";
+		cout << "\n5 - levelorder\n";
+		cout << "\n6 - exit\n\n> ";
 
 		int choice;
 		int number;
@@ -53,10 +51,6 @@ int main(int argc, char* argv[]) {
 		} else if (choice == 4) {
 			bst->deletemax();
 		} else if (choice == 5) {
-			bst->preorder();
-		} else if (choice == 6) {
-			bst->inorder();
-		} else if (choice == 7) {
 			bst->levelorder();
 		} else {
 			return 0;
