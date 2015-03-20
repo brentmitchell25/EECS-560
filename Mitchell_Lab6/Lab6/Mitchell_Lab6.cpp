@@ -43,13 +43,13 @@ int main(int argc, char* argv[]) {
 		} else if (choice == 2) {
 			cout << "\nChoose a number to be deleted to the list:\n\n> ";
 			cin >> number;
-			if (!bst->remove(number)) {
-				cout << endl << number << " is not in the tree.";
-			}
+	//		if (!bst->remove(number)) {
+	//			cout << endl << number << " is not in the tree.";
+	//		}
 		} else if (choice == 3) {
-			bst->deletemin();
+//			bst->deletemin();
 		} else if (choice == 4) {
-			bst->deletemax();
+	//		bst->deletemax();
 		} else if (choice == 5) {
 			bst->levelorder();
 		} else {

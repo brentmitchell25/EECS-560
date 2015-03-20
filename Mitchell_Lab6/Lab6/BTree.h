@@ -10,13 +10,12 @@ private:
 	Node<T>* searchHelper(T data, Node<T>* node);
 	void insertHelper(T data, Node<T>*& node);
 	void deleteminHelper(Node<T>*& node);
-	Node<T>* findMin(Node<T>*& node);
+	T findMin(Node<T>*& node);
 	Node<T>* findMax(Node<T>*& node);
 	void deletemaxHelper(Node<T>*& node);
 	bool removeHelper(T data, Node<T>*& node);
-	void splitNode(Node<T>*& node, Node<T>*& leftChild, Node<T>*& rightChild);
-	Node<T>* findMin(Node<T>* node);
-	Node<T>* makeTwoNode(T data, Node<T>* node);
+	void splitNode(Node<T>*& node, Node<T>* leftChild, Node<T>* rightChild);
+	Node<T>* makeTwoNode(T data1, T data2, Node<T>* node);
 	bool isTwoNode(Node<T>* node);
 
 public:
@@ -44,7 +43,7 @@ template<typename T>
 void BTree<T>::insert(T data) {
 	insertHelper(data, head);
 }
-
+/*
 template<typename T>
 bool BTree<T>::remove(T data) {
 	return removeHelper(data, head);
@@ -64,7 +63,7 @@ template<typename T>
 void BTree<T>::deletemax() {
 	return deletemaxHelper(head);
 }
-
+*/
 template<typename T>
 void BTree<T>::levelorder() {
 	std::cout << "levelorder: ";
@@ -127,10 +126,16 @@ void BTree<T>::insertHelper(T data, Node<T>*& node) {
 				}
 			}
 		} else {
-			if(data > parent->second->key)
-				Node<T>* rightChild = makeTwoNode(data,parent->third);
+			Node<T>* rightChild;
 			Node<T>* leftChild;
-			splitNode(parent, leftChild, rightChild);
+			if (data < parent->second->key) {
+				leftChild = makeTwoNode(data,parent->first->key,parent);
+				rightChild = makeTwoNode(parent->second->key,parent->third->key,parent);
+			} else {
+				leftChild = makeTwoNode(parent->first->key,parent->second->key,parent);
+				rightChild = makeTwoNode(data,parent->third->key,parent);
+			}
+			splitNode(parent->parent, leftChild, rightChild);
 		}
 	} else if (data < node->minSecond) {
 		insertHelper(data, node->first);
@@ -212,27 +217,41 @@ void BTree<T>::insertHelper(T data, Node<T>*& node) {
  */
 
 template<typename T>
-void BTree<T>::splitNode(Node<T>*& node,Node<T>*& leftChild ,Node<T>*& rightChild) {
-	if(isTwoNode()) {
+void BTree<T>::splitNode(Node<T>*& node, Node<T>* leftChild,
+		Node<T>* rightChild) {
+	if (isTwoNode(node)) {
+		if(node->minSecond < leftChild->minSecond) {
+			node->minThird = node->minSecond;
+			node->minSecond = findMin(rightChild);
+			node->third = node->first;
+			node->first = leftChild;
+			node->second = rightChild;
+		}
+		else {
+			node->minThird = findMin(rightChild);
+			node->second = leftChild;
+			node->third = rightChild;
+		}
+	} else {
 
 	}
+
 }
 
 template<typename T>
-Node<T>* BTree<T>::findMin(Node<T>* node) {
+T BTree<T>::findMin(Node<T>*& node) {
 	return (node->isLeaf()) ? node->key : findMin(node->first);
 }
 
 template<typename T>
-Node<T>* BTree<T>::makeTwoNode(T data, Node<T>* node) {
+Node<T>* BTree<T>::makeTwoNode(T data1, T data2, Node<T>* node) {
 	Node<T>* returnNode;
-	Node<T>* firstOrSecond = new Node<T>(data);
-	if(node->isLeaf() && data > node->key) {
-		returnNode = new Node<T>(data,node,firstOrSecond,node->parent);
-	} else if(node->isLeaf() && data < node->key){
-		returnNode = new Node<T>(node->key,firstOrSecond,node,node->parent);
-	} else if( data > node->isLeaf()) {
-
+	Node<T>* leaf1 = new Node<T>(data1);
+	Node<T>* leaf2 = new Node<T>(data2);
+	if(data1 > data2) {
+		returnNode = new Node<T>(data1,leaf1,leaf2,node);
+	} else {
+		returnNode = new Node<T>(data2,leaf2,leaf1,node);
 	}
 	return returnNode;
 }
