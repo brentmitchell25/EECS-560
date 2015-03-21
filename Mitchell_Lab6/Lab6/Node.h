@@ -5,7 +5,6 @@
 template<typename T>
 class Node {
  public:
-  Node(T k);
   Node(T k, Node* p);
   Node(T ms, Node* f, Node* s, Node* p);
   Node(T ms, T mt, T f, T s, T t, Node* p);
@@ -18,12 +17,8 @@ class Node {
   T minSecond;
   T minThird;
   bool isLeaf();
+  bool isTwoNode();
 };
-
-template<typename T>
-Node<T>::Node(T k) :
-key(k), tag(1), first(NULL), second(NULL),third(NULL), parent(NULL), minSecond(-1), minThird(-1) {
-}
 
 template<typename T>
 Node<T>::Node(T k, Node* p) :
@@ -32,17 +27,22 @@ key(k), tag(1), first(NULL), second(NULL),third(NULL), parent(p), minSecond(-1),
 
 template<typename T>
 Node<T>::Node(T ms, Node<T>* f, Node<T>* s, Node* p) :
-key(-1), tag(-1), first(f), second(s),third(NULL), parent(p), minSecond(ms), minThird(-1) {
+key(-1), tag(0), first(f), second(s),third(NULL), parent(p), minSecond(ms), minThird(-1) {
 }
 
 template<typename T>
 Node<T>::Node(T ms, T mt, T f, T s, T t, Node* p) :
-key(-1), tag(-1), first(f), second(s),third(t), parent(p), minSecond(ms), minThird(mt) {
+key(-1), tag(0), first(f), second(s),third(t), parent(p), minSecond(ms), minThird(mt) {
 }
 
 template<typename T>
 bool Node<T>::isLeaf() {
 	return (tag == 1) ? true : false;
+}
+
+template<typename T>
+bool Node<T>::isTwoNode() {
+	return (third == NULL) ? true : false;
 }
 
 #endif /* NODE_H_ */
