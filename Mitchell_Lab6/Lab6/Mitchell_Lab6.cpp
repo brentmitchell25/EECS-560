@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 	      BinarySearchTree<long> bst;
 	      Tree23<long> tree23;
 	      Timer t;
-	      cout << "BST Insert for n = " << j << " Time = ";
+	      cout << "BST Insert for n = " << i << " and Seed = " << j << " Time = ";
 	      t.start();
 
 
