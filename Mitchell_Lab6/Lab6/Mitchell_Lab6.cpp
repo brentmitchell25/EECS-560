@@ -9,7 +9,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	/*
+
 	ifstream myfile;
 
 	// If no command line argument, open hard coded file
@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	Tree23<int>* tree = new Tree23<int>();
+	Tree23<long>* tree = new Tree23<long>();
 
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
 		cout << "\n\n---------------------------------------\n";
 	}
 	delete tree;
-	*/
 
+/*
 	for (long i = 50000; i <= 400000; i += 50000) {
 	    for (int j = 1; j < 6; j++) {
 
@@ -78,7 +78,9 @@ int main(int argc, char* argv[]) {
 
 	      srand(j);
 	      for (int k = 0; k < i; k++) {
-	    	  bst.insert(rand()/RAND_MAX);
+	    	  long x = rand() % RAND_MAX;
+
+	    	  bst.insert(x);
 	      }
 
 	      t.printTime(t.stop());
@@ -86,8 +88,8 @@ int main(int argc, char* argv[]) {
 	      cout << "BST Insert and Delete for n = " << j << " Time = ";
 	      t.start();
 	      for (int k = 0; k < i; k++) {
-	    	  for(int l = 1; l <= i / 10; i++) {
-	    		  int x = rand() / RAND_MAX;
+	    	  for(int l = 1; l <= i / 10; l++) {
+	    		  double x = rand() / (double)RAND_MAX;
 	    		  if(x < 0.25)
 	    			  bst.deletemin();
 	    		  else if(0.25 <= x && x < 0.5)
@@ -107,16 +109,20 @@ int main(int argc, char* argv[]) {
 
 	      srand(j);
 	      for (int k = 0; k < i; k++) {
-	    	  tree23.insert(rand()/RAND_MAX);
+	    	  fstream file;
+	    	  file.open("DumpFile.txt",fstream::in | fstream::out | fstream::app);
+	    	  long x = rand() % RAND_MAX;
+	    	      	  file << x << " ";
+	    	      	  file.close();
+	    	  tree23.insert(x);
 	      }
-
 	      t.printTime(t.stop());
 
 	      cout << "2-3 Tree Insert and Delete for n = " << j << " Time = ";
 	      t.start();
 	      for (int k = 0; k < i; k++) {
 	    	  for(int l = 1; l <= i / 10; i++) {
-	    		  int x = rand() / RAND_MAX;
+	    		  int x = rand() % RAND_MAX;
 	    		  if(x < 0.25)
 	    			  tree23.deletemin();
 	    		  else if(0.25 <= x && x < 0.5)
@@ -132,5 +138,7 @@ int main(int argc, char* argv[]) {
 
 	    }
 	  }
+*/
+
 	return 0;
 }

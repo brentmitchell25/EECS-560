@@ -48,7 +48,9 @@ Tree23<T>::~Tree23() {
 
 template<typename T>
 void Tree23<T>::insert(T data) {
-	insertHelper(data, head);
+	if(search(head,data) != NULL)
+		insertHelper(data, head);
+	return;
 }
 
 template<typename T>
@@ -124,7 +126,7 @@ void Tree23<T>::insertHelper(T data, Node23<T>*& node) {
 		node->key = -1;
 		node->tag = 0;
 	} else if (node->isLeaf()) {
-		Node23<T>* parent = node->parent;
+		Node23<T>*& parent = node->parent;
 		if (node->parent->isTwoNode()) {
 			if (data >= parent->minSecond) {
 				parent->minThird = data;
@@ -144,16 +146,21 @@ void Tree23<T>::insertHelper(T data, Node23<T>*& node) {
 		} else {
 			Node23<T>* rightChild;
 			Node23<T>* leftChild;
+			Node23<T>* parentParent = parent->parent;
 			if (data < parent->second->key) {
-				leftChild = makeTwoNode(parent->first->key, data, parent);
+				leftChild = makeTwoNode(parent->first->key, data, parentParent);
 				rightChild = makeTwoNode(parent->second->key,
-						parent->third->key, parent);
+						parent->third->key, parentParent);
 			} else {
 				leftChild = makeTwoNode(parent->first->key, parent->second->key,
-						parent);
-				rightChild = makeTwoNode(data, parent->third->key, parent);
+						parentParent);
+				rightChild = makeTwoNode(data, parent->third->key, parentParent);
 			}
-			splitNode(parent->parent, leftChild, rightChild);
+
+			delete parent;
+			parent = NULL;
+
+			splitNode(parentParent, leftChild, rightChild);
 		}
 	} else if (data < node->minSecond) {
 		insertHelper(data, node->first);
@@ -371,9 +378,14 @@ void Tree23<T>::splitNode(Node23<T>*& node, Node23<T>*& leftChild,
 
 	} else if (node->isTwoNode()) {
 		if (node->minSecond > leftChild->minSecond) {
-			node->third = node->first;
+			if(node->first->minSecond == findMin(rightChild->first)->key)
+				node->third = node->second;
+			else
+				node->third = node->first;
 			node->first = leftChild;
+			node->first->parent = node;
 			node->second = rightChild;
+			node->second->parent = node;
 			node->minThird = findMin(node->third)->key;
 			node->minSecond = findMin(node->second)->key;
 		} else {
@@ -475,7 +487,9 @@ int Tree23<T>::getHeight(Node23<T>* node, Node23<T>* searchNode, int height) {
 
 template<typename T>
 Node23<T>*& Tree23<T>::search(Node23<T>*& node, T data) {
-	if (node->isLeaf())
+	if(node == NULL)
+		return node;
+	else if (node->isLeaf())
 		return node->key == data ? node : node->first;
 	else if (data < node->minSecond)
 		return search(node->first, data);
