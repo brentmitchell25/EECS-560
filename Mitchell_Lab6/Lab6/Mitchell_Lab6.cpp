@@ -9,7 +9,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-
+/*
 	ifstream myfile;
 
 	// If no command line argument, open hard coded file
@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
 		cout << "\n\n---------------------------------------\n";
 	}
 	delete tree;
+*/
 
-/*
 	for (long i = 50000; i <= 400000; i += 50000) {
 	    for (int j = 1; j < 6; j++) {
 
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
 
 	    }
 	  }
-*/
+
 
 	return 0;
 }

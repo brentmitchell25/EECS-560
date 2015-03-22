@@ -151,14 +151,14 @@ void Tree23<T>::insertHelper(T data, Node23<T>*& node) {
 			Node23<T>* leftChild;
 			Node23<T>* parentParent = parent->parent;
 			if (data < parent->second->key) {
-				leftChild = makeTwoNode(parent->first->key, data, parentParent);
+				leftChild = makeTwoNode(parent->first->key, data, parent);
 				rightChild = makeTwoNode(parent->second->key,
-						parent->third->key, parentParent);
+						parent->third->key, parent);
 			} else {
 				leftChild = makeTwoNode(parent->first->key, parent->second->key,
-						parentParent);
+						parent);
 				rightChild = makeTwoNode(data, parent->third->key,
-						parentParent);
+						parent);
 			}
 
 			delete parent;
@@ -382,7 +382,7 @@ void Tree23<T>::splitNode(Node23<T>*& node, Node23<T>*& leftChild,
 		delete node;
 	} else if (node->isTwoNode()) {
 		if (node->minSecond > leftChild->minSecond) {
-			if (node->first->minSecond == findMin(rightChild->first)->key)
+			if (node->first->minSecond == findMin(rightChild->first)->key || node->first->minSecond == findMin(leftChild->second)->key)
 				node->third = node->second;
 			else
 				node->third = node->first;
@@ -402,7 +402,7 @@ void Tree23<T>::splitNode(Node23<T>*& node, Node23<T>*& leftChild,
 	} else {
 		Node23<T>* newLeftChild;
 		Node23<T>* newRightChild;
-		Node23<T>* nodePtr = node;
+		Node23<T>* nodePtr = new Node23<T>(node->minSecond,node->minThird,node->first,node->second,node->third,node->parent);
 		if (rightChild->minSecond < nodePtr->second->minSecond) {
 			newLeftChild = new Node23<T>(findMin(rightChild)->key, leftChild,
 					rightChild, nodePtr->parent);
@@ -410,6 +410,7 @@ void Tree23<T>::splitNode(Node23<T>*& node, Node23<T>*& leftChild,
 			rightChild->parent = newLeftChild;
 			newRightChild = new Node23<T>(findMin(nodePtr->third)->key,
 					nodePtr->second, nodePtr->third, nodePtr->parent);
+
 			nodePtr->second->parent = newRightChild;
 			nodePtr->third->parent = newRightChild;
 			delete node;
@@ -458,9 +459,13 @@ Node23<T>* Tree23<T>::findMax(Node23<T>*& node) {
 template<typename T>
 Node23<T>* Tree23<T>::makeTwoNode(T data1, T data2, Node23<T>* node) {
 	Node23<T>* returnNode = NULL;
-	Node23<T>* leaf1 = NULL;
-	leaf1 = new Node23<T>(data1, returnNode);
+	// The head was changing randomly here sometimes
+	Node23<T>* headPtr = new Node23<T>(head->minSecond,head->minThird,head->first,head->second,head->third,NULL);
+	Node23<T>* leaf1 = new Node23<T>(data1, returnNode);
 	Node23<T>* leaf2 = new Node23<T>(data2, returnNode);
+	if(headPtr->first != head->first) {
+		head = headPtr;
+	}
 	if (data1 > data2) {
 		returnNode = new Node23<T>(data1, leaf2, leaf1, node);
 	} else {
