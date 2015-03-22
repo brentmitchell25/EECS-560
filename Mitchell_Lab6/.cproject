@@ -42,6 +42,7 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.488637627.751499830" name="data.txt" rcbsApplicability="disable" resourcePath="Lab6/data.txt" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Lab6"/>
 					</sourceEntries>
@@ -117,4 +118,12 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Mitchell_Lab6"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Mitchell_Lab6"/>
+		</configuration>
+	</storageModule>
 </cproject>
