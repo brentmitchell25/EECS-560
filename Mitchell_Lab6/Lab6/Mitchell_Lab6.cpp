@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <stdlib.h>
 #include "Tree23.h"
 
@@ -85,7 +84,7 @@ int main(int argc, char* argv[]) {
 
 	      t.printTime(t.stop());
 
-	      cout << "BST Insert and Delete for n = " << j << " Time = ";
+	      cout << "BST Insert and Delete for n = " << i << " and Seed = " << j << " Time = ";
 	      t.start();
 	      for (int k = 0; k < i; k++) {
 	    	  for(int l = 1; l <= i / 10; l++) {
@@ -104,24 +103,19 @@ int main(int argc, char* argv[]) {
 	      t.printTime(t.stop());
 
 
-	      cout << "2-3 Tree Insert for n = " << j << " Time = ";
+	      cout << "2-3 Tree Insert for n = " << i << " and Seed = " << j << " Time = ";
 	      t.start();
 
 	      srand(j);
 	      for (int k = 0; k < i; k++) {
-	    	  fstream file;
-	    	  file.open("DumpFile.txt",fstream::in | fstream::out | fstream::app);
 	    	  long x = rand() % RAND_MAX;
-	    	      	  file << x << " ";
-	    	      	  file.close();
 	    	  tree23.insert(x);
 	      }
 	      t.printTime(t.stop());
 
-	      cout << "2-3 Tree Insert and Delete for n = " << j << " Time = ";
+	      cout << "2-3 Tree Insert and Delete for n = " << i << " and Seed = " << j << " Time = ";
 	      t.start();
-	      for (int k = 0; k < i; k++) {
-	    	  for(int l = 1; l <= i / 10; i++) {
+	    	  for(int l = 1; l <= i / 10; l++) {
 	    		  int x = rand() % RAND_MAX;
 	    		  if(x < 0.25)
 	    			  tree23.deletemin();
@@ -132,7 +126,7 @@ int main(int argc, char* argv[]) {
 	    		  else {
 	    			  tree23.insert(rand() % (4 * i));
 	    		  }
-	    	  }
+
 	      }
 	      t.printTime(t.stop());
 
