@@ -1,0 +1,160 @@
+BST Insert for n = 50000 and Seed = 1 Time = ,0.020358
+BST Insert and Delete for n = 50000 and Seed = 1 Time = ,0.000391
+2-3 Tree Insert for n = 50000 and Seed = 1 Time = ,0.059619
+2-3 Tree Insert and Delete for n = 50000 and Seed = 1 Time = ,2e-06
+BST Insert for n = 50000 and Seed = 2 Time = ,0.02588
+BST Insert and Delete for n = 50000 and Seed = 2 Time = ,0.000402
+2-3 Tree Insert for n = 50000 and Seed = 2 Time = ,0.059838
+2-3 Tree Insert and Delete for n = 50000 and Seed = 2 Time = ,1e-06
+BST Insert for n = 50000 and Seed = 3 Time = ,0.026035
+BST Insert and Delete for n = 50000 and Seed = 3 Time = ,0.000385
+2-3 Tree Insert for n = 50000 and Seed = 3 Time = ,0.06001
+2-3 Tree Insert and Delete for n = 50000 and Seed = 3 Time = ,1e-06
+BST Insert for n = 50000 and Seed = 4 Time = ,0.027781
+BST Insert and Delete for n = 50000 and Seed = 4 Time = ,0.000386
+2-3 Tree Insert for n = 50000 and Seed = 4 Time = ,0.059548
+2-3 Tree Insert and Delete for n = 50000 and Seed = 4 Time = ,1e-06
+BST Insert for n = 50000 and Seed = 5 Time = ,0.027122
+BST Insert and Delete for n = 50000 and Seed = 5 Time = ,0.000384
+2-3 Tree Insert for n = 50000 and Seed = 5 Time = ,0.060106
+2-3 Tree Insert and Delete for n = 50000 and Seed = 5 Time = ,1e-06
+BST Insert for n = 100000 and Seed = 1 Time = ,0.054192
+BST Insert and Delete for n = 100000 and Seed = 1 Time = ,0.000783
+2-3 Tree Insert for n = 100000 and Seed = 1 Time = ,0.132741
+2-3 Tree Insert and Delete for n = 100000 and Seed = 1 Time = ,2e-06
+BST Insert for n = 100000 and Seed = 2 Time = ,0.065794
+BST Insert and Delete for n = 100000 and Seed = 2 Time = ,0.000762
+2-3 Tree Insert for n = 100000 and Seed = 2 Time = ,0.141285
+2-3 Tree Insert and Delete for n = 100000 and Seed = 2 Time = ,2e-06
+BST Insert for n = 100000 and Seed = 3 Time = ,0.067059
+BST Insert and Delete for n = 100000 and Seed = 3 Time = ,0.000761
+2-3 Tree Insert for n = 100000 and Seed = 3 Time = ,0.141614
+2-3 Tree Insert and Delete for n = 100000 and Seed = 3 Time = ,1e-06
+BST Insert for n = 100000 and Seed = 4 Time = ,0.068335
+BST Insert and Delete for n = 100000 and Seed = 4 Time = ,0.000765
+2-3 Tree Insert for n = 100000 and Seed = 4 Time = ,0.141769
+2-3 Tree Insert and Delete for n = 100000 and Seed = 4 Time = ,1e-06
+BST Insert for n = 100000 and Seed = 5 Time = ,0.07198
+BST Insert and Delete for n = 100000 and Seed = 5 Time = ,0.000756
+2-3 Tree Insert for n = 100000 and Seed = 5 Time = ,0.1416
+2-3 Tree Insert and Delete for n = 100000 and Seed = 5 Time = ,2e-06
+BST Insert for n = 150000 and Seed = 1 Time = ,0.099262
+BST Insert and Delete for n = 150000 and Seed = 1 Time = ,0.001135
+2-3 Tree Insert for n = 150000 and Seed = 1 Time = ,0.222847
+2-3 Tree Insert and Delete for n = 150000 and Seed = 1 Time = ,2e-06
+BST Insert for n = 150000 and Seed = 2 Time = ,0.111607
+BST Insert and Delete for n = 150000 and Seed = 2 Time = ,0.000997
+2-3 Tree Insert for n = 150000 and Seed = 2 Time = ,0.209856
+2-3 Tree Insert and Delete for n = 150000 and Seed = 2 Time = ,3e-06
+BST Insert for n = 150000 and Seed = 3 Time = ,0.103757
+BST Insert and Delete for n = 150000 and Seed = 3 Time = ,0.001031
+2-3 Tree Insert for n = 150000 and Seed = 3 Time = ,0.212894
+2-3 Tree Insert and Delete for n = 150000 and Seed = 3 Time = ,2e-06
+BST Insert for n = 150000 and Seed = 4 Time = ,0.106407
+BST Insert and Delete for n = 150000 and Seed = 4 Time = ,0.001012
+2-3 Tree Insert for n = 150000 and Seed = 4 Time = ,0.219791
+2-3 Tree Insert and Delete for n = 150000 and Seed = 4 Time = ,1e-06
+BST Insert for n = 150000 and Seed = 5 Time = ,0.107553
+BST Insert and Delete for n = 150000 and Seed = 5 Time = ,0.000996
+2-3 Tree Insert for n = 150000 and Seed = 5 Time = ,0.21113
+2-3 Tree Insert and Delete for n = 150000 and Seed = 5 Time = ,1e-06
+BST Insert for n = 200000 and Seed = 1 Time = ,0.142332
+BST Insert and Delete for n = 200000 and Seed = 1 Time = ,0.001329
+2-3 Tree Insert for n = 200000 and Seed = 1 Time = ,0.289143
+2-3 Tree Insert and Delete for n = 200000 and Seed = 1 Time = ,1e-06
+BST Insert for n = 200000 and Seed = 2 Time = ,0.148385
+BST Insert and Delete for n = 200000 and Seed = 2 Time = ,0.001334
+2-3 Tree Insert for n = 200000 and Seed = 2 Time = ,0.297479
+2-3 Tree Insert and Delete for n = 200000 and Seed = 2 Time = ,1e-06
+BST Insert for n = 200000 and Seed = 3 Time = ,0.155148
+BST Insert and Delete for n = 200000 and Seed = 3 Time = ,0.001332
+2-3 Tree Insert for n = 200000 and Seed = 3 Time = ,0.298976
+2-3 Tree Insert and Delete for n = 200000 and Seed = 3 Time = ,5e-06
+BST Insert for n = 200000 and Seed = 4 Time = ,0.157369
+BST Insert and Delete for n = 200000 and Seed = 4 Time = ,0.00135
+2-3 Tree Insert for n = 200000 and Seed = 4 Time = ,0.29797
+2-3 Tree Insert and Delete for n = 200000 and Seed = 4 Time = ,2e-06
+BST Insert for n = 200000 and Seed = 5 Time = ,0.150754
+BST Insert and Delete for n = 200000 and Seed = 5 Time = ,0.001328
+2-3 Tree Insert for n = 200000 and Seed = 5 Time = ,0.298907
+2-3 Tree Insert and Delete for n = 200000 and Seed = 5 Time = ,3e-06
+BST Insert for n = 250000 and Seed = 1 Time = ,0.183032
+BST Insert and Delete for n = 250000 and Seed = 1 Time = ,0.001677
+2-3 Tree Insert for n = 250000 and Seed = 1 Time = ,0.380814
+2-3 Tree Insert and Delete for n = 250000 and Seed = 1 Time = ,1e-06
+BST Insert for n = 250000 and Seed = 2 Time = ,0.205028
+BST Insert and Delete for n = 250000 and Seed = 2 Time = ,0.00168
+2-3 Tree Insert for n = 250000 and Seed = 2 Time = ,0.389055
+2-3 Tree Insert and Delete for n = 250000 and Seed = 2 Time = ,7e-06
+BST Insert for n = 250000 and Seed = 3 Time = ,0.201274
+BST Insert and Delete for n = 250000 and Seed = 3 Time = ,0.001659
+2-3 Tree Insert for n = 250000 and Seed = 3 Time = ,0.390166
+2-3 Tree Insert and Delete for n = 250000 and Seed = 3 Time = ,2e-06
+BST Insert for n = 250000 and Seed = 4 Time = ,0.208024
+BST Insert and Delete for n = 250000 and Seed = 4 Time = ,0.001676
+2-3 Tree Insert for n = 250000 and Seed = 4 Time = ,0.388599
+2-3 Tree Insert and Delete for n = 250000 and Seed = 4 Time = ,2e-06
+BST Insert for n = 250000 and Seed = 5 Time = ,0.202197
+BST Insert and Delete for n = 250000 and Seed = 5 Time = ,0.001678
+2-3 Tree Insert for n = 250000 and Seed = 5 Time = ,0.391379
+2-3 Tree Insert and Delete for n = 250000 and Seed = 5 Time = ,2e-06
+BST Insert for n = 300000 and Seed = 1 Time = ,0.234771
+BST Insert and Delete for n = 300000 and Seed = 1 Time = ,0.002005
+2-3 Tree Insert for n = 300000 and Seed = 1 Time = ,0.475058
+2-3 Tree Insert and Delete for n = 300000 and Seed = 1 Time = ,2e-06
+BST Insert for n = 300000 and Seed = 2 Time = ,0.262333
+BST Insert and Delete for n = 300000 and Seed = 2 Time = ,0.002012
+2-3 Tree Insert for n = 300000 and Seed = 2 Time = ,0.483659
+2-3 Tree Insert and Delete for n = 300000 and Seed = 2 Time = ,3e-06
+BST Insert for n = 300000 and Seed = 3 Time = ,0.262733
+BST Insert and Delete for n = 300000 and Seed = 3 Time = ,0.001979
+2-3 Tree Insert for n = 300000 and Seed = 3 Time = ,0.484905
+2-3 Tree Insert and Delete for n = 300000 and Seed = 3 Time = ,2e-06
+BST Insert for n = 300000 and Seed = 4 Time = ,0.256655
+BST Insert and Delete for n = 300000 and Seed = 4 Time = ,0.00197
+2-3 Tree Insert for n = 300000 and Seed = 4 Time = ,0.484135
+2-3 Tree Insert and Delete for n = 300000 and Seed = 4 Time = ,1e-06
+BST Insert for n = 300000 and Seed = 5 Time = ,0.265329
+BST Insert and Delete for n = 300000 and Seed = 5 Time = ,0.001989
+2-3 Tree Insert for n = 300000 and Seed = 5 Time = ,0.485798
+2-3 Tree Insert and Delete for n = 300000 and Seed = 5 Time = ,2e-06
+BST Insert for n = 350000 and Seed = 1 Time = ,0.297582
+BST Insert and Delete for n = 350000 and Seed = 1 Time = ,0.002327
+2-3 Tree Insert for n = 350000 and Seed = 1 Time = ,0.572292
+2-3 Tree Insert and Delete for n = 350000 and Seed = 1 Time = ,3e-06
+BST Insert for n = 350000 and Seed = 2 Time = ,0.325672
+BST Insert and Delete for n = 350000 and Seed = 2 Time = ,0.002335
+2-3 Tree Insert for n = 350000 and Seed = 2 Time = ,0.579266
+2-3 Tree Insert and Delete for n = 350000 and Seed = 2 Time = ,7e-06
+BST Insert for n = 350000 and Seed = 3 Time = ,0.324057
+BST Insert and Delete for n = 350000 and Seed = 3 Time = ,0.002321
+2-3 Tree Insert for n = 350000 and Seed = 3 Time = ,0.581935
+2-3 Tree Insert and Delete for n = 350000 and Seed = 3 Time = ,1e-06
+BST Insert for n = 350000 and Seed = 4 Time = ,0.339106
+BST Insert and Delete for n = 350000 and Seed = 4 Time = ,0.002308
+2-3 Tree Insert for n = 350000 and Seed = 4 Time = ,0.58024
+2-3 Tree Insert and Delete for n = 350000 and Seed = 4 Time = ,2e-06
+BST Insert for n = 350000 and Seed = 5 Time = ,0.31542
+BST Insert and Delete for n = 350000 and Seed = 5 Time = ,0.002334
+2-3 Tree Insert for n = 350000 and Seed = 5 Time = ,0.583509
+2-3 Tree Insert and Delete for n = 350000 and Seed = 5 Time = ,3e-06
+BST Insert for n = 400000 and Seed = 1 Time = ,0.348968
+BST Insert and Delete for n = 400000 and Seed = 1 Time = ,0.002638
+2-3 Tree Insert for n = 400000 and Seed = 1 Time = ,0.671003
+2-3 Tree Insert and Delete for n = 400000 and Seed = 1 Time = ,3e-06
+BST Insert for n = 400000 and Seed = 2 Time = ,0.367966
+BST Insert and Delete for n = 400000 and Seed = 2 Time = ,0.002643
+2-3 Tree Insert for n = 400000 and Seed = 2 Time = ,0.679609
+2-3 Tree Insert and Delete for n = 400000 and Seed = 2 Time = ,1e-06
+BST Insert for n = 400000 and Seed = 3 Time = ,0.379842
+BST Insert and Delete for n = 400000 and Seed = 3 Time = ,0.002646
+2-3 Tree Insert for n = 400000 and Seed = 3 Time = ,0.680763
+2-3 Tree Insert and Delete for n = 400000 and Seed = 3 Time = ,3e-06
+BST Insert for n = 400000 and Seed = 4 Time = ,0.376052
+BST Insert and Delete for n = 400000 and Seed = 4 Time = ,0.002657
+2-3 Tree Insert for n = 400000 and Seed = 4 Time = ,0.678681
+2-3 Tree Insert and Delete for n = 400000 and Seed = 4 Time = ,2e-06
+BST Insert for n = 400000 and Seed = 5 Time = ,0.381602
+BST Insert and Delete for n = 400000 and Seed = 5 Time = ,0.002661
+2-3 Tree Insert for n = 400000 and Seed = 5 Time = ,0.681282
+2-3 Tree Insert and Delete for n = 400000 and Seed = 5 Time = ,2e-06
