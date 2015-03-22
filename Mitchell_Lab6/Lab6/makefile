@@ -6,6 +6,6 @@ time: Timing.o
 Mitchell_Lab6.o: Mitchell_Lab6.cpp
 	g++ -c Mitchell_Lab6.cpp
 Timing.o: Timing.cpp
-	g++ Timing.cpp
+	g++ -c Timing.cpp
 clean:
 	rm -f *o *~ lab* time

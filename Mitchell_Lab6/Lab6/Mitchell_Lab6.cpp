@@ -1,14 +1,10 @@
 #include <iostream>
-#include <stdlib.h>
+#include <fstream>
 #include "Tree23.h"
-
-#include <sstream>
-#include "Timer.cpp"
-#include "BinarySearchTree.h"
+#include <stdlib.h>
 using namespace std;
 
 int main(int argc, char* argv[]) {
-
 	ifstream myfile;
 
 	// If no command line argument, open hard coded file
