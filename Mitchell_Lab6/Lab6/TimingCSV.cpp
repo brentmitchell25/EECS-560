@@ -21,6 +21,8 @@ int main(int argc, char* argv[]) {
       Timer t;
       file << "BST Insert for n = " << i << " and Seed = " << j
 	   << " Time = ";
+       cout << "BST Insert for n = " << i << " and Seed = " << j
+					<< " Time = ";
       t.start();
 
       srand(j);
@@ -29,13 +31,15 @@ int main(int argc, char* argv[]) {
 
 	bst.insert(x);
       }
-
-      file << "," << t.stop() << endl;
+      double stop = t.stop();
+      file << "," << stop << endl;
+      t.printTime(stop);
 
       file << "BST Insert and Delete for n = " << i << " and Seed = " << j
 	   << " Time = ";
+      cout << "BST Insert and Delete for n = " << i << " and Seed = " << j
+					<< " Time = ";
       t.start();
-      for (int k = 0; k < i; k++) {
 	for (int l = 1; l <= i / 10; l++) {
 	  double x = rand() / (double) RAND_MAX;
 	  if (x < 0.25)
@@ -48,13 +52,16 @@ int main(int argc, char* argv[]) {
 	    bst.insert(rand() % (4 * i));
 	  }
 	}
-      }
-      file << "," << t.stop() << endl;
+      stop = t.stop();
+      file << "," << stop << endl;
+      t.printTime(stop);
 
       file << "2-3 Tree Insert for n = " << i << " and Seed = " << j
 	   << " Time = ";
-      t.start();
+      cout << "2-3 Tree Insert for n = " << i << " and Seed = " << j
+	   << " Time = ";
 
+      t.start();
       srand(j);
       for (int k = 0; k < i; k++) {
 	long x = rand() % RAND_MAX;
@@ -63,6 +70,8 @@ int main(int argc, char* argv[]) {
       file << "," << t.stop() << endl;
 
       file << "2-3 Tree Insert and Delete for n = " << i << " and Seed = "
+	   << j << " Time = ";
+      cout << "2-3 Tree Insert and Delete for n = " << i << " and Seed = "
 	   << j << " Time = ";
       t.start();
 
@@ -76,9 +85,10 @@ int main(int argc, char* argv[]) {
       else {
 	tree23.insert(rand() % (4 * i));
       }
+      stop = t.stop();
+      file << "," << stop << endl;
+      t.printTime(stop);
 
-
-      file << "," << t.stop() << endl;
 
     }
   }
