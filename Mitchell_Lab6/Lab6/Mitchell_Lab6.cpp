@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 
-#include "BTree.h"
+#include "Tree23.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -15,11 +15,11 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	BTree<int>* bst = new BTree<int>();
+	Tree23<int>* tree = new Tree23<int>();
 
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
-		bst->insert(atoi(word.c_str()));
+		tree->insert(atoi(word.c_str()));
 	}
 	myfile.close();
 
@@ -39,25 +39,25 @@ int main(int argc, char* argv[]) {
 		if (choice == 1) {
 			cout << "\nChoose a number to be inserted to the list:\n\n> ";
 			cin >> number;
-			bst->insert(number);
+			tree->insert(number);
 		} else if (choice == 2) {
 			cout << "\nChoose a number to be deleted to the list:\n\n> ";
 			cin >> number;
-	//		if (!bst->remove(number)) {
-	//			cout << endl << number << " is not in the tree.";
-	//		}
+			if (!tree->remove(number)) {
+				cout << endl << number << " is not in the tree.";
+			}
 		} else if (choice == 3) {
-//			bst->deletemin();
+			tree->deletemin();
 		} else if (choice == 4) {
-	//		bst->deletemax();
+			tree->deletemax();
 		} else if (choice == 5) {
-			bst->levelorder();
+			tree->levelorder();
 		} else {
 			return 0;
 		}
 
 		cout << "\n\n---------------------------------------\n";
 	}
-	delete bst;
+	delete tree;
 	return 0;
 }
