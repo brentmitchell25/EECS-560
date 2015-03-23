@@ -37,7 +37,7 @@ key(-1), tag(0), first(f), second(s),third(t), parent(p), minSecond(ms), minThir
 
 template<typename T>
 bool Node23<T>::isLeaf() {
-	return (tag == 1) ? true : false;
+	return (tag != 0) ? true : false;
 }
 
 template<typename T>
