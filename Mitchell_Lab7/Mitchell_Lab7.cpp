@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "Tree23.h"
+#include "Queue.h"
+#include "MinMaxHeap.h"
 #include <stdlib.h>
 using namespace std;
 
@@ -14,23 +15,28 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	Tree23<long>* tree = new Tree23<long>();
+	Queue<int>* queue = new Queue<int>();
 
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
-		tree->insert(atoi(word.c_str()));
+		queue->enqueue(atoi(word.c_str()));
 	}
 	myfile.close();
+	
+	MinMaxHeap<int>* mmh = new MinMaxHeap<int>(queue->getTotalCount());
+	while(!queue->isEmpty()) {
+	  mmh->insert(queue->dequeue());
+	}
+	delete queue;
 
 	while (true) {
 
 		cout << "\nPlease choose one of the following commands:\n";
 		cout << "\n1 - insert\n";
-		cout << "\n2 - remove\n";
-		cout << "\n3 - deletemin\n";
-		cout << "\n4 - deletemax\n";
-		cout << "\n5 - levelorder\n";
-		cout << "\n6 - exit\n\n> ";
+		cout << "\n2 - deletemin\n";
+		cout << "\n3 - deletemax\n";
+		cout << "\n4 - levelorder\n";
+		cout << "\n5 - exit\n\n> ";
 
 		int choice;
 		int number;
@@ -38,26 +44,20 @@ int main(int argc, char* argv[]) {
 		if (choice == 1) {
 			cout << "\nChoose a number to be inserted to the list:\n\n> ";
 			cin >> number;
-			tree->insert(number);
-		} else if (choice == 2) {
-			cout << "\nChoose a number to be deleted to the list:\n\n> ";
-			cin >> number;
-			if (!tree->remove(number)) {
-				cout << endl << number << " is not in the tree.";
-			}
+			mmh->insert(number);
+		}  else if (choice == 2) {
+			mmh->deletemin();
 		} else if (choice == 3) {
-			tree->deletemin();
+			mmh->deletemax();
 		} else if (choice == 4) {
-			tree->deletemax();
-		} else if (choice == 5) {
-			tree->levelorder();
+			mmh->print();
 		} else {
 			return 0;
 		}
 
 		cout << "\n\n---------------------------------------\n";
 	}
-	delete tree;
+	delete mmh;
 
 
 

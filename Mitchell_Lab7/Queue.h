@@ -17,6 +17,7 @@ private:
 
 	void insertHelper(T data, Node*& n);
 	bool findHelper(T data, Node* n);
+	long count;
 
 public:
 	Queue();
@@ -26,6 +27,7 @@ public:
 	T dequeue();
 	void print();
 	bool find(T data);
+	long getTotalCount();
 };
 
 template<typename T>
@@ -70,21 +72,21 @@ bool Queue<T>::findHelper(T data, Node* n) {
 template<typename T>
 void Queue<T>::enqueue(T data) {
 	insertHelper(data, head);
+	count++;
 }
 
 template<typename T>
 bool Queue<T>::isEmpty() {
-	return head == NULL;
+	return count == 0;
 }
 
 template<typename T>
 T Queue<T>::dequeue() {
-	if (isEmpty())
-		return NULL;
 	T returnPtr = head->data;
 	Node* delNode = head;
 	head = head->next;
 	delete delNode;
+	count--;
 	return returnPtr;
 }
 
@@ -101,6 +103,11 @@ void Queue<T>::print() {
 template<typename T>
 bool Queue<T>::find(T data) {
 	return findHelper(data, head);
+}
+
+template<typename T>
+long Queue<T>::getTotalCount() {
+  return count;
 }
 
 #endif /* QUEUE_H_ */

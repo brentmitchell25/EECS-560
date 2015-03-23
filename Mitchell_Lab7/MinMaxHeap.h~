@@ -1,0 +1,52 @@
+#ifndef MINMAXHEAP_H_
+#define MINMAXHEAP_H_
+#include <iostream>
+
+template<typename T>
+class MinMaxHeap {
+
+private:
+  long* table;
+  long lastElement;
+  long maxLength;
+  void TrickleDown(T value);
+  void TrickleDownMin(T value);
+  void TrickleDownMax(T value);
+  void BubbleUp(T value);
+  void BubbleUpMin(T value);
+    void BubbleUpMax(T value);
+
+public:
+	MinMaxHeadp(long l);
+	virtual ~MinMaxHeadp();
+	void insert(T data);
+	void deletemin();
+	void deletemax();
+	void print();
+};
+
+template<typename T>
+MinMaxHeap<T>::MinMaxHeap(long l):lastElement(1) {
+  table = new long[++l];
+  maxLength = l;
+}
+
+template<typename T>
+MinMaxHeap<T>::~MinMaxHeap() {
+  delete length;
+}
+
+template<typename T>
+void MinMaxHeap<T>::insert(T value) {
+  if(maxLength < ++lastElement)
+    table[lastElement] = value;
+}
+
+template<typename T>
+void MinMaxHeap<T>::print() {
+  for(long i = 1; i <= maxLength; i++) {
+    cout << table[i] << " ";
+  }
+}
+
+#endif
