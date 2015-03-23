@@ -167,11 +167,14 @@ void Tree23<T>::insertHelper(T data, Node23<T>*& node) {
 			splitNode(parentParent, leftChild, rightChild);
 		}
 	} else if (data < node->minSecond) {
+		node->first->parent = node;
 		insertHelper(data, node->first);
 	} else if ((node->isTwoNode() && data >= node->minSecond)
 			|| (data >= node->minSecond && data < node->minThird)) {
+		node->second->parent = node;
 		insertHelper(data, node->second);
 	} else if (data >= node->minThird) {
+		node->third->parent = node;
 		insertHelper(data, node->third);
 	}
 }
@@ -231,6 +234,7 @@ bool Tree23<T>::removeHelper(T data, Node23<T>*& node) {
 			if (!sibling->isTwoNode()) {
 				if (node->minSecond >= sibling->minSecond) {
 					node->first = sibling->third;
+					node->first->parent = node;
 					sibling->minThird = -1;
 					sibling->third = NULL;
 					resetMinSecondAndMinThird(node);
@@ -263,17 +267,17 @@ bool Tree23<T>::removeHelper(T data, Node23<T>*& node) {
 					redistribute(sibling->parent);
 				} else if (!sibling->parent->isTwoNode()) {
 					Node23<T>* copySibling = sibling;
-					if (sibling->parent->first == previousNode) {
-						sibling->parent->first = sibling->parent->second;
+					if(sibling->parent->first == previousNode) {
+					sibling->parent->first = sibling->parent->second;
+					sibling->parent->second = sibling->parent->third;
+					sibling->parent->minSecond = findMin(
+							sibling->parent->second)->key;
+					sibling->parent->minThird = -1;
+					sibling->parent->third = NULL;
+					} else if(sibling->parent->second == previousNode) {
 						sibling->parent->second = sibling->parent->third;
 						sibling->parent->minSecond = findMin(
-								sibling->parent->second)->key;
-						sibling->parent->minThird = -1;
-						sibling->parent->third = NULL;
-					} else if (sibling->parent->second == previousNode) {
-						sibling->parent->second = sibling->parent->third;
-						sibling->parent->minSecond = findMin(
-								sibling->parent->second)->key;
+							sibling->parent->second)->key;
 						sibling->parent->minThird = -1;
 						sibling->parent->third = NULL;
 					} else {
@@ -316,8 +320,7 @@ bool Tree23<T>::removeHelper(T data, Node23<T>*& node) {
 					resetMinSecondAndMinThird(node);
 				}
 			} else {
-				Node23<T>* newNode = new Node23<T>(node->first->key,
-						node->parent);
+				Node23<T>* newNode = new Node23<T>(node->first->key, node->parent);
 				insertHelper(newNode->key, sibling);
 				if (sibling->parent->parent != NULL) {
 					Node23<T>* delNode = sibling->parent;
@@ -331,24 +334,26 @@ bool Tree23<T>::removeHelper(T data, Node23<T>*& node) {
 					delete delNode;
 					redistribute(sibling->parent);
 				} else if (!sibling->parent->isTwoNode()) {
-					if (sibling->parent->first == newNode) {
-						sibling->parent->first = sibling->parent->second;
+					Node23<T>* sibParent = sibling->parent;
+					if(findMin(sibling->parent->first)->key == newNode->key) {
+					sibling->parent->first = sibling->parent->second;
+					sibling->parent->second = sibling->parent->third;
+					sibling->parent->minSecond = findMin(
+							sibling->parent->second)->key;
+					sibling->parent->minThird = -1;
+					sibling->parent->third = NULL;
+					} else if(findMin(sibling->parent->second)->key == newNode->key) {
 						sibling->parent->second = sibling->parent->third;
 						sibling->parent->minSecond = findMin(
-								sibling->parent->second)->key;
-						sibling->parent->minThird = -1;
-						sibling->parent->third = NULL;
-					} else if (sibling->parent->second == newNode) {
-						sibling->parent->second = sibling->parent->third;
-						sibling->parent->minSecond = findMin(
-								sibling->parent->second)->key;
+							sibling->parent->second)->key;
 						sibling->parent->minThird = -1;
 						sibling->parent->third = NULL;
 					} else {
-						sibling->parent->minThird = -1;
 						sibling->parent->third = NULL;
+						sibling->parent->minThird = -1;
+
 					}
-					resetMinSecondAndMinThird(sibling->parent);
+					resetMinSecondAndMinThird(sibParent);
 
 				} else {
 					Node23<T>* parent = sibling->parent;
@@ -480,9 +485,9 @@ template<typename T>
 int Tree23<T>::getHeight(Node23<T>* node, Node23<T>* searchNode, int height) {
 	if (node == searchNode)
 		return height;
-	else if (searchNode == NULL) {
-		getHeight(node->first, searchNode, ++height);
-	} else if (searchNode != node) {
+	else if (searchNode == NULL && node->first != node) {
+		return getHeight(node->first, searchNode, ++height);
+	} else if (searchNode != node && searchNode != NULL) {
 		if ((searchNode->isLeaf() && searchNode->key < node->minSecond)
 				|| (!searchNode->isLeaf()
 						&& searchNode->minSecond < node->minSecond))
@@ -495,6 +500,7 @@ int Tree23<T>::getHeight(Node23<T>* node, Node23<T>* searchNode, int height) {
 		else
 			return getHeight(node->second, searchNode, ++height);
 	}
+	return height;
 }
 
 template<typename T>
@@ -503,12 +509,18 @@ Node23<T>*& Tree23<T>::search(Node23<T>*& node, T data) {
 		return node;
 	else if (node->isLeaf())
 		return node->key == data ? node : node->first;
-	else if (data < node->minSecond)
+	else if (data < node->minSecond) {
+		node->first->parent = node;
 		return search(node->first, data);
-	else if (!node->isTwoNode() && data >= node->minThird)
+	}
+	else if (!node->isTwoNode() && data >= node->minThird) {
+		node->third->parent = node;
 		return search(node->third, data);
-	else
+	}
+	else {
+		node->second->parent = node;
 		return search(node->second, data);
+	}
 }
 
 template<typename T>
@@ -628,7 +640,7 @@ void Tree23<T>::fixNodes(Node23<T>*& firstNode, Node23<T>*& secondNode,
 					secondNode->third, secondNode->parent);
 			splitNode(secondNode->parent, leftChild, rightChild);
 		} else {
-			Node23<T>* leftChild = new Node23<T>(findMin(secondNode)->key,
+			Node23<T>* leftChild = new Node23<T>(findMin(secondNode->second)->key,
 					secondNode->first, secondNode->second, secondNode->parent);
 			Node23<T>* rightChild = new Node23<T>(findMin(newImproperNode)->key,
 					secondNode->third, newImproperNode, secondNode->parent);
@@ -638,7 +650,7 @@ void Tree23<T>::fixNodes(Node23<T>*& firstNode, Node23<T>*& secondNode,
 		if (whichNode == 1) {
 			Node23<T>* leftChild = new Node23<T>(findMin(firstNode->first)->key,
 					newImproperNode, firstNode->first, firstNode->parent);
-			Node23<T>* rightChild = new Node23<T>(findMin(firstNode)->key,
+			Node23<T>* rightChild = new Node23<T>(findMin(firstNode->third)->key,
 					firstNode->second, firstNode->third, firstNode->parent);
 			splitNode(secondNode->parent, leftChild, rightChild);
 		} else if (whichNode == 2) {
