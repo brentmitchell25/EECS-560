@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "MinMaxHeap.h"
 #include <stdlib.h>
+
+#include "../Lab7/MinMaxHeap.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
 		mmh->insert(atoi(word.c_str()));
 	}
 	myfile.close();
-
+	mmh->TrickleDown();
 
 
 	while (true) {
