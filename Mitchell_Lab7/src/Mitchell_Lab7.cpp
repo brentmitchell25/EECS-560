@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include "Queue.h"
 #include "MinMaxHeap.h"
 #include <stdlib.h>
 using namespace std;
@@ -15,19 +14,14 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	Queue<int>* queue = new Queue<int>();
-
+	MinMaxHeap<int>* mmh = new MinMaxHeap<int>();
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
-		queue->enqueue(atoi(word.c_str()));
+		mmh->insert(atoi(word.c_str()));
 	}
 	myfile.close();
-	
-	MinMaxHeap<int>* mmh = new MinMaxHeap<int>(queue->getTotalCount());
-	while(!queue->isEmpty()) {
-	  mmh->insert(queue->dequeue());
-	}
-	delete queue;
+
+
 
 	while (true) {
 
