@@ -27,19 +27,20 @@ private:
 	bool isMaxNode(long index);
 	bool hasChildren(long index);
 	void swap(long &a, long &b);
-	long compare(const long indexA, const long indexB);
+	long compareLessThan(const long indexA, const long indexB);
+	long compareGreaterThan(const long indexA, const long indexB);
 	long getLeftChild(long index);
 	long getRightChild(long index);
 	long getParent(long index);
 	long smallestIndexOfChildAndGrandchild(long index);
 	long largestIndexOfChildAndGrandchild(long index);
 	void twoGrandchildrenSpecialCase(long index);
-
+	void specialCase();
 
 public:
 	MinMaxHeap();
 	virtual ~MinMaxHeap();
-	void insert(T data);
+	void insert(T data, bool buildTable);
 	void deletemin();
 	void deletemax();
 	void print();
@@ -58,20 +59,86 @@ MinMaxHeap<T>::~MinMaxHeap() {
 }
 
 template<typename T>
-void MinMaxHeap<T>::insert(T data) {
+void MinMaxHeap<T>::insert(T data, bool buildTable) {
 	if (size > length)
 		increaseTable();
 	table[size++] = data;
-	BubbleUp(size-1);
+
+	if (!buildTable)
+		BubbleUp(size - 1);
 }
 
 template<typename T>
 void MinMaxHeap<T>::deletemin() {
-
+	if (size < 2) {
+		std::cout << "Heap is already empty!" << std::endl;
+	} else if (size == 2) {
+		size--;
+	} else if (size == 3) {
+		table[1] = table[2];
+		size--;
+	} else {
+		long s = smallestIndexOfChildAndGrandchild(1);
+		long x = size - 1;
+		if (table[x] <= table[s])
+			table[1] = table[x];
+		else {
+			if (log2(s) == 1) {
+				table[1] = table[s];
+				table[s] = table[x];
+				size--;
+			} else if(table[x] <= table[getParent(s)]){
+				size--;
+				table[1] = table[s];
+				table[s] = table[x];
+				TrickleDownMin(s);
+			} else {
+				size--;
+				table[1] = s;
+				table[s] = table[getParent(s)];
+				table[getParent(s)] = table[x];
+				TrickleDownMin(s);
+			}
+		}
+	}
 }
 
 template<typename T>
 void MinMaxHeap<T>::deletemax() {
+	if (size < 2) {
+		std::cout << "Heap is already empty!" << std::endl;
+	} else if (size == 2) {
+		size--;
+	} else if (size == 3) {
+		table[1] = table[2];
+		size--;
+	} else {
+		long max = largestIndexOfChildAndGrandchild(1);
+		long s = largestIndexOfChildAndGrandchild(max);
+		long x = size - 1;
+		if (table[x] >= table[s]) {
+			table[max] = table[x];
+			size--;
+		}
+		else {
+			if (log2(max) == 1) {
+				table[max] = table[s];
+				table[s] = table[x];
+				size--;
+			} else if(table[x] >= table[getParent(s)]){
+				size--;
+				table[max] = table[s];
+				table[s] = table[x];
+				TrickleDownMax(s);
+			} else {
+				size--;
+				table[max] = s;
+				table[s] = table[getParent(s)];
+				table[getParent(s)] = table[x];
+				TrickleDownMax(s);
+			}
+		}
+	}
 }
 
 template<typename T>
@@ -79,7 +146,7 @@ void MinMaxHeap<T>::print() {
 	int prevHeight = 1;
 	for (long i = 1; i < size; i++) {
 		int curHeight = log2(i);
-		if(curHeight != prevHeight) {
+		if (curHeight != prevHeight) {
 			std::cout << std::endl;
 			prevHeight = curHeight;
 		}
@@ -102,90 +169,67 @@ void MinMaxHeap<T>::increaseTable() {
 
 template<typename T>
 void MinMaxHeap<T>::TrickleDown() {
-	for(int i = getParent(size-1); i >= 1; i--) {
-		print();
-		std::cout  << std::endl;
-	if(isMinNode(i)) {
-		TrickleDownMin(i);
-	} else {
-		TrickleDownMax(i);
-	}
+	for (int i = (int) log2(size) * 2 + 1; i >= 1; i--) {
+		if (isMinNode(i)) {
+			TrickleDownMin(i);
+		} else {
+			TrickleDownMax(i);
+		}
 	}
 }
 
 template<typename T>
 void MinMaxHeap<T>::TrickleDownMin(long index) {
-	if(hasChildren(index)) {
-
-		long firstGrandchild = getLeftChild(getLeftChild(index));
-		if(firstGrandchild < size && firstGrandchild + 2 >= size) {
-			long leaf = getRightChild(index);
-			long max = std::max(table[leaf],std::max(table[firstGrandchild],table[firstGrandchild+1]));
-			if(max != table[leaf]) {
-				if(table[max] == table[firstGrandchild])
-				swap(table[firstGrandchild],table[leaf]);
-				else
-					swap(table[firstGrandchild+1],table[leaf]);
-			}
-		}
+	if (hasChildren(index)) {
 
 		long m = smallestIndexOfChildAndGrandchild(index);
-		if((long)log2(m) == ((long)log2(index) + 2)) {
-			if(table[m] < table[index]) {
-				swap(table[index],table[m]);
-				if(table[m] > table[getParent(m)])
-					swap(table[m],table[getParent(m)]);
+		if ((long) log2(m) == ((long) log2(index) + 2)) {
+			if (table[m] < table[index]) {
+				swap(table[index], table[m]);
+				if (table[m] > table[getParent(m)])
+					swap(table[m], table[getParent(m)]);
 			}
 			TrickleDownMin(m);
 		} else {
-			if(table[m] < table[index])
-				swap(table[index],table[m]);
+			if (table[m] < table[index])
+				swap(table[index], table[m]);
 		}
 	}
 }
 
 template<typename T>
 void MinMaxHeap<T>::TrickleDownMax(long index) {
-	if(hasChildren(index)) {
+	if (hasChildren(index)) {
 		long firstGrandchild = getLeftChild(getLeftChild(index));
-		if(firstGrandchild < size && firstGrandchild + 2 >= size) {
-			long leaf = getRightChild(index);
-			long min = std::min(table[leaf],std::min(table[firstGrandchild],table[firstGrandchild+1]));
-			if(min != table[leaf]) {
-				if(table[min] == table[firstGrandchild])
-				swap(table[firstGrandchild],table[leaf]);
-				else
-					swap(table[firstGrandchild+1],table[leaf]);
-			}
-		}
 
 		long m = largestIndexOfChildAndGrandchild(index);
-		if((long)log2(m) == ((long)log2(index) + 2)) {
-			if(table[m] > table[index]) {
-				swap(table[index],table[m]);
-				if(table[m] < table[getParent(m)])
-					swap(table[m],table[getParent(m)]);
+		if ((long) log2(m) == ((long) log2(index) + 2)) {
+			std::cout << table[m] << " " << table[index] << std::endl;
+			if (table[m] > table[index]) {
+				swap(table[index], table[m]);
+				if (table[m] < table[getParent(m)])
+					swap(table[m], table[getParent(m)]);
 			}
 			TrickleDownMax(m);
 		} else {
-			if(table[m] > table[index])
-				swap(table[index],table[m]);
+			if (table[m] > table[index])
+				swap(table[index], table[m]);
 		}
 	}
 }
 
 template<typename T>
 void MinMaxHeap<T>::BubbleUp(long index) {
-	if(isMinNode(index)) {
-		if(getParent(index) >= 1 && table[index] > table[getParent(index)]) {
-			swap(table[index],table[getParent(index)]);
+	if (isMinNode(index)) {
+		if (getParent(index) >= 1 && table[index] > table[getParent(index)]) {
+			swap(table[index], table[getParent(index)]);
 			BubbleUpMax(getParent(index));
 		} else {
 			BubbleUpMin(index);
 		}
 	} else {
-		if(getParent(index) >= 1 && table[index] < table[getParent(index)]) {
-			swap(table[index],table[getParent(index)]);
+		if (getParent(index) >= 1 && table[index] < table[getParent(index)]) {
+			swap(table[index], table[getParent(index)]);
 			BubbleUpMin(getParent(index));
 		} else {
 			BubbleUpMax(index);
@@ -196,9 +240,9 @@ void MinMaxHeap<T>::BubbleUp(long index) {
 template<typename T>
 void MinMaxHeap<T>::BubbleUpMin(long index) {
 	long grandparent = getParent(getParent(index));
-	if(grandparent >= 1) {
-		if(table[index] < table[grandparent]) {
-			swap(table[index],table[grandparent]);
+	if (grandparent >= 1) {
+		if (table[index] < table[grandparent]) {
+			swap(table[index], table[grandparent]);
 			BubbleUpMin(grandparent);
 		}
 	}
@@ -206,10 +250,10 @@ void MinMaxHeap<T>::BubbleUpMin(long index) {
 
 template<typename T>
 void MinMaxHeap<T>::BubbleUpMax(long index) {
-long grandparent = getParent(getParent(index));
-	if(grandparent >= 1) {
-		if(table[index] > table[grandparent]) {
-			swap(table[index],table[grandparent]);
+	long grandparent = getParent(getParent(index));
+	if (grandparent >= 1) {
+		if (table[index] > table[grandparent]) {
+			swap(table[index], table[grandparent]);
 			BubbleUpMax(grandparent);
 		}
 	}
@@ -217,7 +261,7 @@ long grandparent = getParent(getParent(index));
 
 template<typename T>
 bool MinMaxHeap<T>::isMinNode(long index) {
-	return (long)log2(index) % 2 == 0;
+	return (long) log2(index) % 2 == 0;
 }
 
 template<typename T>
@@ -227,7 +271,7 @@ bool MinMaxHeap<T>::isMaxNode(long index) {
 
 template<typename T>
 bool MinMaxHeap<T>::hasChildren(long index) {
-	return 2*index <= length;
+	return (2 * index) < size;
 }
 
 template<typename T>
@@ -238,8 +282,13 @@ void MinMaxHeap<T>::swap(long &a, long &b) {
 }
 
 template<typename T>
-long MinMaxHeap<T>::compare(long indexA, long indexB) {
+long MinMaxHeap<T>::compareLessThan(long indexA, long indexB) {
 	return table[indexA] < table[indexB] ? indexA : indexB;
+}
+
+template<typename T>
+long MinMaxHeap<T>::compareGreaterThan(long indexA, long indexB) {
+	return table[indexA] > table[indexB] ? indexA : indexB;
 }
 
 template<typename T>
@@ -263,12 +312,12 @@ long MinMaxHeap<T>::smallestIndexOfChildAndGrandchild(long index) {
 	long leftGrandchild = getLeftChild(leftChild);
 	long smallestIndex = leftChild;
 
-	if(leftChild + 1 < size)
-		smallestIndex = compare(leftChild,leftChild+1);
+	if (leftChild + 1 < size)
+		smallestIndex = compareLessThan(leftChild, leftChild + 1);
 
-		for(long i = 0; i < 4 && leftGrandchild + i < size; i++) {
-			smallestIndex = compare(smallestIndex,leftGrandchild + 1);
-		}
+	for (long i = 0; i < 4 && leftGrandchild + i < size; i++) {
+		smallestIndex = compareLessThan(smallestIndex, leftGrandchild + i);
+	}
 
 	return smallestIndex;
 
@@ -280,11 +329,11 @@ long MinMaxHeap<T>::largestIndexOfChildAndGrandchild(long index) {
 	long leftGrandchild = getLeftChild(leftChild);
 	long largestIndex = leftChild;
 
-	if(leftChild + 1 < size)
-		largestIndex = compare(leftChild,leftChild+1);
-		for(long i = 0; i < 4 && leftGrandchild + i < size; i++) {
-			largestIndex = compare(leftGrandchild + 1, largestIndex);
-		}
+	if (leftChild + 1 < size)
+		largestIndex = compareGreaterThan(leftChild + 1, leftChild);
+	for (long i = 0; i < 4 && leftGrandchild + i < size; i++) {
+		largestIndex = compareGreaterThan(leftGrandchild + i, largestIndex);
+	}
 
 	return largestIndex;
 
@@ -293,11 +342,25 @@ long MinMaxHeap<T>::largestIndexOfChildAndGrandchild(long index) {
 template<typename T>
 void MinMaxHeap<T>::twoGrandchildrenSpecialCase(long index) {
 	long firstGrandchild = getLeftChild(getLeftChild(index));
-		if(firstGrandchild < size && firstGrandchild + 2 >= size) {
-			long leaf = getRightChild(index);
-			long min = std::min(leaf,std::min(firstGrandchild,firstGrandchild+1));
-			if(min != leaf)
-				swap(table[min],table[leaf]);
+	if (firstGrandchild < size && firstGrandchild + 2 >= size) {
+		long leaf = getRightChild(index);
+		long min = std::min(leaf,
+				std::min(firstGrandchild, firstGrandchild + 1));
+		if (min != leaf)
+			swap(table[min], table[leaf]);
+	}
+}
+
+template<typename T>
+void MinMaxHeap<T>::specialCase() {
+	long firstLeaf = pow(2, (int) log2(size));
+	for (int index = pow(2, (int) log2(size) - 1); index < firstLeaf; index++)
+		for (int j = firstLeaf; j < size; j++) {
+			if (isMinNode(index) && table[j] < table[index])
+				swap(table[j], table[index]);
+			else if (isMaxNode(index) && table[j] > table[index])
+				swap(table[j], table[index]);
 		}
+
 }
 #endif /* MINMAXHEAP_H_ */

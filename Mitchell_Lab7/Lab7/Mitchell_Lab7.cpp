@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 	MinMaxHeap<int>* mmh = new MinMaxHeap<int>();
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
-		mmh->insert(atoi(word.c_str()));
+		mmh->insert(atoi(word.c_str()),true);
 	}
 	myfile.close();
 	mmh->TrickleDown();
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 		if (choice == 1) {
 			cout << "\nChoose a number to be inserted to the list:\n\n> ";
 			cin >> number;
-			mmh->insert(number);
+			mmh->insert(number,false);
 		}  else if (choice == 2) {
 			mmh->deletemin();
 		} else if (choice == 3) {
