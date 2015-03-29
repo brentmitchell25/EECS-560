@@ -34,8 +34,6 @@ private:
 	long getParent(long index);
 	long smallestIndexOfChildAndGrandchild(long index);
 	long largestIndexOfChildAndGrandchild(long index);
-	void twoGrandchildrenSpecialCase(long index);
-	void specialCase();
 
 public:
 	MinMaxHeap();
@@ -80,8 +78,10 @@ void MinMaxHeap<T>::deletemin() {
 	} else {
 		long s = smallestIndexOfChildAndGrandchild(1);
 		long x = size - 1;
-		if (table[x] <= table[s])
+		if (table[x] <= table[s]) {
 			table[1] = table[x];
+			size--;
+		}
 		else {
 			if (log2(s) == 1) {
 				table[1] = table[s];
@@ -339,28 +339,4 @@ long MinMaxHeap<T>::largestIndexOfChildAndGrandchild(long index) {
 
 }
 
-template<typename T>
-void MinMaxHeap<T>::twoGrandchildrenSpecialCase(long index) {
-	long firstGrandchild = getLeftChild(getLeftChild(index));
-	if (firstGrandchild < size && firstGrandchild + 2 >= size) {
-		long leaf = getRightChild(index);
-		long min = std::min(leaf,
-				std::min(firstGrandchild, firstGrandchild + 1));
-		if (min != leaf)
-			swap(table[min], table[leaf]);
-	}
-}
-
-template<typename T>
-void MinMaxHeap<T>::specialCase() {
-	long firstLeaf = pow(2, (int) log2(size));
-	for (int index = pow(2, (int) log2(size) - 1); index < firstLeaf; index++)
-		for (int j = firstLeaf; j < size; j++) {
-			if (isMinNode(index) && table[j] < table[index])
-				swap(table[j], table[index]);
-			else if (isMaxNode(index) && table[j] > table[index])
-				swap(table[j], table[index]);
-		}
-
-}
 #endif /* MINMAXHEAP_H_ */
