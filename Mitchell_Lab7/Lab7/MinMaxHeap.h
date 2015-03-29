@@ -94,7 +94,7 @@ void MinMaxHeap<T>::deletemin() {
 				TrickleDownMin(s);
 			} else {
 				size--;
-				table[1] = s;
+				table[1] = table[s];
 				table[s] = table[getParent(s)];
 				table[getParent(s)] = table[x];
 				TrickleDownMin(s);
@@ -132,7 +132,7 @@ void MinMaxHeap<T>::deletemax() {
 				TrickleDownMax(s);
 			} else {
 				size--;
-				table[max] = s;
+				table[max] = table[s];
 				table[s] = table[getParent(s)];
 				table[getParent(s)] = table[x];
 				TrickleDownMax(s);
