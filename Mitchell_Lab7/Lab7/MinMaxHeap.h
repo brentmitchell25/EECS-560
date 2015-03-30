@@ -204,7 +204,6 @@ void MinMaxHeap<T>::TrickleDownMax(long index) {
 
 		long m = largestIndexOfChildAndGrandchild(index);
 		if ((long) log2(m) == ((long) log2(index) + 2)) {
-			std::cout << table[m] << " " << table[index] << std::endl;
 			if (table[m] > table[index]) {
 				swap(table[index], table[m]);
 				if (table[m] < table[getParent(m)])

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 
-#include "../Lab7/MinMaxHeap.h"
+#include "MinMaxHeap.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
