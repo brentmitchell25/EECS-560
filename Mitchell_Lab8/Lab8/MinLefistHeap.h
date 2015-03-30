@@ -14,7 +14,7 @@ class MinLefistHeap {
 
 private:
 	void merge(BinaryNode<T> *h1,BinaryNode<T> *h2);
-	int getRank(BinaryNode<T> *h1);
+	int rank(BinaryNode<T> *h1, int count);
 	void swap(T& a, T& b);
 public:
 	MinLefistHeap();
@@ -67,5 +67,22 @@ void MinLefistHeap<T>::swap(T &a, T &b) {
 	a = b;
 	b = c;
 }
+
+template<typename T>
+void MinLefistHeap<T>::merge(BinaryNode<T> *h1,BinaryNode<T> *h2) {
+
+}
+
+template<typename T>
+int MinLefistHeap<T>::rank(BinaryNode<T> *h,int count) {
+	if(h == NULL)
+		return 0;
+	else {
+		count++;
+		return std::max(rank(h->right,count),rank(h->left,count));
+	}
+}
+
+
 
 #endif /* MINLEFISTHEAP_H_ */
