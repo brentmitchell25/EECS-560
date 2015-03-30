@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 		myfile.open("data.txt");
 	string word;
 
-	MinLefistHeap<int>* mlh = new MinLefistHeap<int>();
+	MinLeftistHeap<int>* mlh = new MinLeftistHeap<int>();
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
 		mlh->insert(atoi(word.c_str()));

@@ -5,13 +5,13 @@
  *      Author: brentmitchell
  */
 
-#ifndef MINLEFISTHEAP_H_
-#define MINLEFISTHEAP_H_
+#ifndef MinLeftistHeap_H_
+#define MinLeftistHeap_H_
 #include "BinaryNode.h"
 #include "Queue.h"
 
 template<typename T>
-class MinLefistHeap {
+class MinLeftistHeap {
 
 private:
 	void destroy(BinaryNode<T> *node);
@@ -21,9 +21,10 @@ private:
 	BinaryNode<T>* head;
 	void inorderTraversal(BinaryNode<T> *node);
 	void preorderTraversal(BinaryNode<T> *node);
+	int getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode, int height);
 public:
-	MinLefistHeap();
-	virtual ~MinLefistHeap();
+	MinLeftistHeap();
+	virtual ~MinLeftistHeap();
 	void insert(T data);
 	bool deletemin();
 	void preorder();
@@ -32,18 +33,18 @@ public:
 };
 
 template<typename T>
-MinLefistHeap<T>::MinLefistHeap() :
+MinLeftistHeap<T>::MinLeftistHeap() :
 		head(NULL) {
 
 }
 
 template<typename T>
-MinLefistHeap<T>::~MinLefistHeap() {
+MinLeftistHeap<T>::~MinLeftistHeap() {
 	destroy(head);
 }
 
 template<typename T>
-void MinLefistHeap<T>::destroy(BinaryNode<T> *node) {
+void MinLeftistHeap<T>::destroy(BinaryNode<T> *node) {
 	if (node == NULL)
 		return;
 	destroy(node->left);
@@ -52,57 +53,90 @@ void MinLefistHeap<T>::destroy(BinaryNode<T> *node) {
 }
 
 template<typename T>
-void MinLefistHeap<T>::insert(T data) {
+void MinLeftistHeap<T>::insert(T data) {
 	BinaryNode<T> *newNode = new BinaryNode<T>(data);
 	head = merge(newNode,head);
 }
 
 template<typename T>
-bool MinLefistHeap<T>::deletemin() {
+bool MinLeftistHeap<T>::deletemin() {
 
 }
 
 template<typename T>
-void MinLefistHeap<T>::preorder() {
+void MinLeftistHeap<T>::preorder() {
 	std::cout << "preorder: ";
 	preorderTraversal(head);
 }
 
 template<typename T>
-void MinLefistHeap<T>::inorder() {
+void MinLeftistHeap<T>::inorder() {
 	std::cout << "inorder: ";
 	inorderTraversal(head);
 }
 
 template<typename T>
-void MinLefistHeap<T>::levelorder() {
-	std::cout << "levelorder: ";
-	if (head == NULL)
-		return;
-	Queue<BinaryNode<T>*> q;
-	BinaryNode<T>* printNode = head;
-	q.enqueue(printNode);
+void MinLeftistHeap<T>::levelorder() {
+	std::cout << "levelorder: " << std::endl;
+		if (head == NULL)
+			return;
+		Queue<BinaryNode<T>*>* q = new Queue<BinaryNode<T>*>();
+		BinaryNode<T>* printNode = head;
+		q->enqueue(printNode);
+		int prevHeight = 0;
 
-	do {
-		printNode = q.dequeue();
-		std::cout << printNode->key << " ";
-		if (printNode->left != NULL)
-			q.enqueue(printNode->left);
-		if (printNode->right != NULL)
-			q.enqueue(printNode->right);
-	} while (!q.isEmpty());
+		do {
+			printNode = q->dequeue();
+			int curHeight = getHeight(head, printNode, 0);
+
+			if (curHeight != prevHeight) {
+				std::cout << std::endl;
+				prevHeight = curHeight;
+			}
+
+
+				std::cout << printNode->key << " ";
+
+
+			if (printNode->left != NULL)
+				q->enqueue(printNode->left);
+			if (printNode->right != NULL)
+				q->enqueue(printNode->right);
+
+		} while (!q->isEmpty());
+
+		delete q;
 
 }
 
 template<typename T>
-void MinLefistHeap<T>::swap(BinaryNode<T>*& a, BinaryNode<T>*& b) {
-	BinaryNode<T> *temp = new BinaryNode<T>(a->key,a->rank,a->left,a->right);
+int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode, int height) {
+	int checkHeight = 1;
+	if(node == NULL)
+		return 0;
+	if (node->key == searchNode->key)
+		return height;
+	else {
+		checkHeight = getHeight(node->left, searchNode, ++height);
+	}
+	if(checkHeight == 0)
+		return getHeight(node->right, searchNode, ++height);
+	return checkHeight;
+}
+
+template<typename T>
+void MinLeftistHeap<T>::swap(BinaryNode<T>*& a, BinaryNode<T>*& b) {
+	BinaryNode<T> *temp;
+	if(a == NULL)
+		temp = NULL;
+	else
+		temp = new BinaryNode<T>(a->key,a->rank,a->left,a->right);
 	a = b;
 	b = temp;
 }
 
 template<typename T>
-BinaryNode<T>* MinLefistHeap<T>::merge(BinaryNode<T> *h1, BinaryNode<T> *h2) {
+BinaryNode<T>* MinLeftistHeap<T>::merge(BinaryNode<T> *h1, BinaryNode<T> *h2) {
 	if (h1 == NULL)
 		return h2;
 	else if (h2 == NULL)
@@ -111,23 +145,26 @@ BinaryNode<T>* MinLefistHeap<T>::merge(BinaryNode<T> *h1, BinaryNode<T> *h2) {
 		swap(h1, h2);
 	}
 	h1->right = merge(h1->right, h2);
-	if (rank(h1->left, 0) < rank(h1->right, 0))
+	h1->rank = rank(h1,0);
+	if(h1->left == NULL)
+		swap(h1->left, h1->right);
+	else if (h1->right != NULL && h1->left->rank < h1->right->rank)
 		swap(h1->left, h1->right);
 	return h1;
 }
 
 template<typename T>
-int MinLefistHeap<T>::rank(BinaryNode<T> *h, int count) {
+int MinLeftistHeap<T>::rank(BinaryNode<T> *h, int count) {
 	if (h == NULL)
-		return 0;
+		return ++count;
 	else {
 		count++;
-		return std::max(rank(h->right, count), rank(h->left, count));
+		return std::min(rank(h->right, count), rank(h->left, count));
 	}
 }
 
 template<typename T>
-void MinLefistHeap<T>::inorderTraversal(BinaryNode<T> *node) {
+void MinLeftistHeap<T>::inorderTraversal(BinaryNode<T> *node) {
 	if (node == NULL)
 		return;
 
@@ -137,7 +174,7 @@ void MinLefistHeap<T>::inorderTraversal(BinaryNode<T> *node) {
 }
 
 template<typename T>
-void MinLefistHeap<T>::preorderTraversal(BinaryNode<T> *node) {
+void MinLeftistHeap<T>::preorderTraversal(BinaryNode<T> *node) {
 	if (node == NULL)
 		return;
 
@@ -146,4 +183,4 @@ void MinLefistHeap<T>::preorderTraversal(BinaryNode<T> *node) {
 	preorderTraversal(node->right);
 }
 
-#endif /* MINLEFISTHEAP_H_ */
+#endif /* MinLeftistHeap_H_ */
