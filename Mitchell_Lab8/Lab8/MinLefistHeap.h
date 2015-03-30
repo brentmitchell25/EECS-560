@@ -111,7 +111,7 @@ void MinLeftistHeap<T>::levelorder() {
 
 template<typename T>
 int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode, int height) {
-	int checkHeight = 1;
+  /*	int checkHeight = 1;
 	if(node == NULL)
 		return 0;
 	if (node->key == searchNode->key)
@@ -122,6 +122,22 @@ int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode,
 	if(checkHeight == 0)
 		return getHeight(node->right, searchNode, ++height);
 	return checkHeight;
+  */
+  if(node == NULL)
+    return 0;
+  else if(node->key == searchNode->key)
+    return height;
+  int h1,h2;
+  height++;
+  h1 = getHeight(node->left,searchNode,height);
+  h2 = 	getHeight(node->right,searchNode,height);
+  if(h1 == 0 && h2 == 0)
+    return 0;
+  if(h1 == 0)
+    return h2;
+  else
+    return h1;
+
 }
 
 template<typename T>
