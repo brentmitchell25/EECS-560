@@ -2,7 +2,8 @@
 #include <fstream>
 #include <stdlib.h>
 
-#include "MinLefistHeap.h"
+#include "MinLeftistHeap.h"
+#include "SkewHeap.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -16,6 +17,7 @@ int main(int argc, char* argv[]) {
 	string word;
 
 	MinLeftistHeap<int>* mlh = new MinLeftistHeap<int>();
+	//SkewHeap<int> *mlh = new SkewHeap<int>();
 	while (!myfile.eof()) {
 		getline(myfile, word, ' ');
 		mlh->insert(atoi(word.c_str()));
