@@ -54,14 +54,18 @@ void MinLeftistHeap<T>::destroy(BinaryNode<T> *node) {
 template<typename T>
 void MinLeftistHeap<T>::insert(T data) {
 	BinaryNode<T> *newNode = new BinaryNode<T>(data);
-	head = merge(newNode,head);
+	head = merge(newNode, head);
 }
 
 template<typename T>
 bool MinLeftistHeap<T>::deletemin() {
+	if (head == NULL)
+		return false;
 	BinaryNode<T> *delHead = head;
-	head = merge(head->left,head->right);
+	head = merge(head->left, head->right);
 	delete delHead;
+
+	return true;
 }
 
 template<typename T>
@@ -79,64 +83,63 @@ void MinLeftistHeap<T>::inorder() {
 template<typename T>
 void MinLeftistHeap<T>::levelorder() {
 	std::cout << "levelorder: " << std::endl;
-		if (head == NULL)
-			return;
-		Queue<BinaryNode<T>*>* q = new Queue<BinaryNode<T>*>();
-		BinaryNode<T>* printNode = head;
-		q->enqueue(printNode);
-		int prevHeight = 0;
+	if (head == NULL)
+		return;
+	Queue<BinaryNode<T>*>* q = new Queue<BinaryNode<T>*>();
+	BinaryNode<T>* printNode = head;
+	q->enqueue(printNode);
+	int prevHeight = 0;
 
-		do {
-			printNode = q->dequeue();
-			int curHeight = getHeight(head, printNode, 0);
+	do {
+		printNode = q->dequeue();
+		int curHeight = getHeight(head, printNode, 0);
 
-			if (curHeight != prevHeight) {
-				std::cout << std::endl;
-				prevHeight = curHeight;
-			}
+		if (curHeight != prevHeight) {
+			std::cout << std::endl;
+			prevHeight = curHeight;
+		}
 
+		std::cout << printNode->key << " ";
 
-				std::cout << printNode->key << " ";
+		if (printNode->left != NULL)
+			q->enqueue(printNode->left);
+		if (printNode->right != NULL)
+			q->enqueue(printNode->right);
 
+	} while (!q->isEmpty());
 
-			if (printNode->left != NULL)
-				q->enqueue(printNode->left);
-			if (printNode->right != NULL)
-				q->enqueue(printNode->right);
-
-		} while (!q->isEmpty());
-
-		delete q;
+	delete q;
 
 }
 
 template<typename T>
-int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode, int height) {
+int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode,
+		int height) {
 
-  if(node == NULL)
-    return 0;
-  else if(node->key == searchNode->key)
-    return height;
-  int h1,h2;
-  height++;
-  h1 = getHeight(node->left,searchNode,height);
-  h2 = 	getHeight(node->right,searchNode,height);
-  if(h1 == 0 && h2 == 0)
-    return 0;
-  if(h1 == 0)
-    return h2;
-  else
-    return h1;
+	if (node == NULL)
+		return 0;
+	else if (node->key == searchNode->key)
+		return height;
+	int h1, h2;
+	height++;
+	h1 = getHeight(node->left, searchNode, height);
+	h2 = getHeight(node->right, searchNode, height);
+	if (h1 == 0 && h2 == 0)
+		return 0;
+	if (h1 == 0)
+		return h2;
+	else
+		return h1;
 
 }
 
 template<typename T>
 void MinLeftistHeap<T>::swap(BinaryNode<T>*& a, BinaryNode<T>*& b) {
 	BinaryNode<T> *temp;
-	if(a == NULL)
+	if (a == NULL)
 		temp = NULL;
 	else
-		temp = new BinaryNode<T>(a->key,a->rank,a->left,a->right);
+		temp = new BinaryNode<T>(a->key, a->rank, a->left, a->right);
 	a = b;
 	b = temp;
 }
@@ -151,11 +154,14 @@ BinaryNode<T>* MinLeftistHeap<T>::merge(BinaryNode<T> *h1, BinaryNode<T> *h2) {
 		swap(h1, h2);
 	}
 	h1->right = merge(h1->right, h2);
-	h1->rank = std::min(rank(h1->right,0),rank(h1->left,0));
-	if(h1->left == NULL)
+
+	if (h1->left == NULL)
 		swap(h1->left, h1->right);
-	else if (h1->left->rank < h1->right->rank)
-		swap(h1->left, h1->right);
+	else {
+		if (h1->left->rank < h1->right->rank)
+			swap(h1->left, h1->right);
+		h1->rank = h1->right->rank + 1;
+	}
 	return h1;
 }
 

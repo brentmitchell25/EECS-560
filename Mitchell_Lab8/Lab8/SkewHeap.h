@@ -59,9 +59,13 @@ void SkewHeap<T>::insert(T data) {
 
 template<typename T>
 bool SkewHeap<T>::deletemin() {
+	if(head == NULL)
+		return false;
 	BinaryNode<T> *delHead = head;
 	head = merge(head->left,head->right);
 	delete delHead;
+
+	return true;
 }
 
 template<typename T>
