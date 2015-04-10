@@ -118,7 +118,7 @@ int MinLeftistHeap<T>::getHeight(BinaryNode<T>* node, BinaryNode<T>* searchNode,
 
 	if (node == NULL)
 		return 0;
-	else if (node->key == searchNode->key)
+	else if (node == searchNode)
 		return height;
 	int h1, h2;
 	height++;
