@@ -19,11 +19,12 @@ public:
 	void levelorder();
 
 private:
-	void merge();
+	BQNode<T> *head;
+	void merge(BQNode<T> *first, BQNode<T> *second);
 };
 
 template<typename T>
-BinomialQueue<T>::BinomialQueue() {
+BinomialQueue<T>::BinomialQueue(): head(NULL){
 
 }
 
@@ -34,7 +35,8 @@ BinomialQueue<T>::~BinomialQueue() {
 
 template<typename T>
 void BinomialQueue<T>::insert(T x) {
-
+	BQNode<T> *newNode = new BQNode<T>(x);
+	merge(head,newNode);
 }
 
 template<typename T>
@@ -48,7 +50,7 @@ void BinomialQueue<T>::levelorder() {
 }
 
 template<typename T>
-void BinomialQueue<T>::merge() {
+void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 
 }
 

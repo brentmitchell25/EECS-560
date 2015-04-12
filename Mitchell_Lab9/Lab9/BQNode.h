@@ -13,8 +13,8 @@ class BQNode {
 public:
 	BQNode(T k);
 	BQNode(T k, BQNode *l, BQNode *f, BQNode *r);
-	int order;
 	T key;
+	int order;
 	BQNode *left;
 	BQNode *first;
 	BQNode *right;
