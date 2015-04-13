@@ -20,7 +20,7 @@ public:
 	void levelorder();
 
 private:
-	BQNode<T> **head;
+	BQNode<T> *head;
 	BQNode<T> *combineTrees(BQNode<T> *t1, BQNode<T> *t2);
 	void merge(BQNode<T> *first, BQNode<T> *second);
 };
@@ -39,24 +39,8 @@ BinomialQueue<T>::~BinomialQueue() {
 template<typename T>
 void BinomialQueue<T>::insert(T x) {
 	BQNode<T> *newNode = new BQNode<T>(x);
-	if(head == NULL)
-		head = &newNode;
-	else {
-	BQNode<T> * iter = *head;
-	bool add;
-	while(iter != NULL) {
-		if((iter)->order == newNode->order) {
-			iter = combineTrees(iter,newNode);
-			add = true;
-		}
-		iter = (iter)->right;
-	}
-	if(head != NULL && !add) {
-		newNode->right = *head;
-		(*head)->left = newNode;
-		head = &newNode;
-	}
-	}
+	head = combineTrees(head, newNode);
+
 }
 
 template<typename T>
@@ -69,7 +53,7 @@ void BinomialQueue<T>::levelorder() {
 	Queue<BQNode<T>*> q1;
 	Queue<BQNode<T>*> q2;
 	Queue<BQNode<T>*> q3;
-	q1.enqueue(*head);
+	q1.enqueue(head);
 	while (!q1.isEmpty()) {
 		BQNode<T> *temp = q1.dequeue();
 		std::cout << temp->key;
@@ -159,20 +143,30 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *t1, BQNode<T> *t2) {
 	 t1->left = t2;
 	 return t1;
 	 */
-	if(t1 == NULL) {
+	if (t1 == NULL) {
 		t1 = t2;
-	} else if (t1->key <= t2->key) {
-		if (t2->order == 0 && t1->order == t2->order) {
-			t1->first = t2;
-			t1->order = t1->order + 1;
+	}
+
+	while (t1 != NULL) {
+		if (t1->order < t2->order) {
+			t2->right = t1;
+			t1->left = t2;
+			break;
+		} else if (t1->key <= t2->key) {
+			if (t2->order == 0 && t1->order == t2->order) {
+				t1->first = t2;
+				t1->order = t1->order + 1;
+			} else {
+				t2->left = t1->first;
+				t2->left->right = t2;
+				t1->first->left = t2;
+				t1->order = t1->order + 1;
+			}
+			break;
 		} else {
-			t2->left = t1->first;
-			t2->left->right = t2;
-			t1->first->left = t2;
-			t1->order = t1->order + 1;
+			combineTrees(t2, t1);
 		}
-	} else {
-		combineTrees(t2, t1);
+		t1 = t1->right;
 	}
 	return t1;
 
