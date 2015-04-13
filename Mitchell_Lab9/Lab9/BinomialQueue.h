@@ -21,7 +21,7 @@ public:
 
 private:
 	BQNode<T> *head;
-	BQNode<T> *combineTrees(BQNode<T> *t1, BQNode<T> *t2);
+	BQNode<T> *combineTrees(BQNode<T> *&t1, BQNode<T> *&t2);
 	void merge(BQNode<T> *first, BQNode<T> *second);
 };
 
@@ -39,7 +39,12 @@ BinomialQueue<T>::~BinomialQueue() {
 template<typename T>
 void BinomialQueue<T>::insert(T x) {
 	BQNode<T> *newNode = new BQNode<T>(x);
-	head = combineTrees(head, newNode);
+	newNode->left = newNode;
+	if(head == NULL)
+		head = newNode;
+	else
+		newNode = combineTrees(head, newNode);
+	head = newNode;
 
 }
 
@@ -92,10 +97,10 @@ void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 	BQNode<T> *carry = NULL;
 	BQNode<T> *iter = head;
 	while (iter->right != NULL) {
-		BQNode<T> *t1 = iter;
+		BQNode<T> *iter = iter;
 		BQNode<T> *t2 = second;
 
-		int whichCase = t1 == NULL ? 0 : 1;
+		int whichCase = iter == NULL ? 0 : 1;
 		whichCase += t2 == NULL ? 0 : 2;
 		whichCase += carry == NULL ? 0 : 4;
 
@@ -112,11 +117,11 @@ void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 			carry = NULL;
 			break;
 		case 3: /* this and rhs */
-			carry = combineTrees(t1, t2);
+			carry = combineTrees(iter, t2);
 			iter = second = NULL;
 			break;
 		case 5: /* this and carry */
-			carry = combineTrees(t1, carry);
+			carry = combineTrees(iter, carry);
 			iter = NULL;
 			break;
 		case 6: /* rhs and carry */
@@ -125,7 +130,7 @@ void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 			break;
 		case 7: /* All three */
 			iter = carry;
-			carry = combineTrees(t1, t2);
+			carry = combineTrees(iter, t2);
 			iter = NULL;
 			break;
 		}
@@ -135,40 +140,39 @@ void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 }
 
 template<typename T>
-BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *t1, BQNode<T> *t2) {
+BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 	/*
-	 if( t2->key < t1->key )
-	 return combineTrees( t2, t1 );
-	 t2->first = t1->left;
-	 t1->left = t2;
-	 return t1;
+	 if( t2->key < iter->key )
+	 return combineTrees( t2, iter );
+	 t2->first = iter->left;
+	 iter->left = t2;
+	 return iter;
 	 */
-	if (t1 == NULL) {
-		t1 = t2;
+
+	BQNode<T> *iter = t1;
+	while (iter != NULL) {
+		if (iter->order > t2->order) {
+			t2->left = iter->left;
+			t2->right = iter;
+			iter->left = t2;
+			if(iter == head)
+				head = t2;
+		} else if (iter->key <= t2->key) {
+			if (t2->order == 0 && iter->order == t2->order) {
+				iter->first = t2;
+				iter->order = iter->order + 1;
+			} else if(iter->order == t2->order){
+				t2->left = iter->first;
+				t2->left->right = t2;
+				iter->first->left = t2;
+				iter->order = iter->order + 1;
+			}
+		} else {
+			combineTrees(t2, iter);
+		}
+		iter = iter->right;
 	}
 
-	while (t1 != NULL) {
-		if (t1->order < t2->order) {
-			t2->right = t1;
-			t1->left = t2;
-			break;
-		} else if (t1->key <= t2->key) {
-			if (t2->order == 0 && t1->order == t2->order) {
-				t1->first = t2;
-				t1->order = t1->order + 1;
-			} else {
-				t2->left = t1->first;
-				t2->left->right = t2;
-				t1->first->left = t2;
-				t1->order = t1->order + 1;
-			}
-			break;
-		} else {
-			combineTrees(t2, t1);
-		}
-		t1 = t1->right;
-	}
-	return t1;
 
 }
 #endif /* BINOMIALQUEUE_H_ */
