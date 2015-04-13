@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
 		string word;
 
 		BinomialQueue<int>* bq = new BinomialQueue<int>();
-		//SkewHeap<int> *bq = new SkewHeap<int>();
 		while (!myfile.eof()) {
 			getline(myfile, word, ' ');
 			bq->insert(atoi(word.c_str()));
