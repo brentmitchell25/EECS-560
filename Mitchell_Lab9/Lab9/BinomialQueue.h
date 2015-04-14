@@ -67,8 +67,9 @@ void BinomialQueue<T>::levelorder() {
 			q1.enqueue(temp->right);
 		if (temp->first != NULL)
 			q2.enqueue(temp->first);
-		std::cout << std::endl;
+
 		while (!q2.isEmpty() || !q3.isEmpty()) {
+		std::cout << std::endl;
 			while (!q2.isEmpty()) {
 				BQNode<T>* s = q2.dequeue();
 				std::cout << s->key << " ";
@@ -143,13 +144,6 @@ void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
 
 template<typename T>
 BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
-	/*
-	 if( t2->key < iter->key )
-	 return combineTrees( t2, iter );
-	 t2->first = iter->left;
-	 iter->left = t2;
-	 return iter;
-	 */
 
 	BQNode<T> *iter = t1;
 	while (iter != NULL) {
@@ -166,9 +160,12 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 		} else if (iter->key <= t2->key) {
 			if (t2->order == 0 && iter->order == t2->order) {
 				iter->first = t2;
+				if(t2->left != t2)
+					iter->left = t2->left;
 				iter->order = iter->order + 1;
-				iter = t2;
+				t2 = iter;
 			} else if (iter->order == t2->order) {
+				/*
 				if (t2->right != NULL) {
 					iter->left = t2->left;
 					if (t2->right != iter)
@@ -176,6 +173,7 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 					else
 						iter->right = NULL;
 				}
+				*/
 				t2->left = iter->first;
 				t2->left->right = t2;
 				iter->first->left = t2;
@@ -184,8 +182,11 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 
 				t2->left = t2;
 				t2->right = NULL;
-				if (t2 == head)
+				if (t2 == head) {
 					head = iter;
+
+				}
+					t2 = iter;
 			}
 
 		} else {
@@ -204,14 +205,17 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 				iter->right = NULL;
 				iter = t2;
 			} else if (iter->order == t2->order) {
-				iter->left = t2->first;
+				iter->left = t2->first->left;
 				iter->left->right = iter;
-				iter->left = iter;
+				t2->right = iter->right;
 				iter->right = NULL;
 				t2->first->left = iter;
 				t2->order = t2->order + 1;
-				if (iter == head)
+				if (iter == head) {
 					head = t2;
+
+				}
+									t2 = iter;
 			}
 
 		}
