@@ -75,14 +75,14 @@ bool BinomialQueue<T>::deletemin() {
 
 	BQNode<T> *iter = t->left;
 	while(iter != NULL) {
-		t = iter->right;
+		BQNode<T> *temp = iter->left;
 		iter->left = iter;
 		iter->right = NULL;
 
 		combineTrees(head,iter);
-		if(iter == iter->left)
+		if(temp == t)
 			break;
-		iter = t;
+		iter = temp;
 	}
 
 	return true;
@@ -218,7 +218,6 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 
 				iter->order = iter->order + 1;
 
-				t2->left = t2;
 				t2->right = NULL;
 				if (t2 == head) {
 					head = iter;
@@ -227,7 +226,8 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 					t2 = iter;
 			}
 
-		} else {
+		}
+		else {
 			if (t2->order == 0 && iter->order == t2->order) {
 				t2->first = iter;
 				t2->right = iter->right;
@@ -254,6 +254,10 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 
 				}
 									t2 = iter;
+			} else {
+				iter->right = t2;
+				t2->left = iter;
+				head->left = t2;
 			}
 
 		}
