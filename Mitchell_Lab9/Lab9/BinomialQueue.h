@@ -43,14 +43,49 @@ void BinomialQueue<T>::insert(T x) {
 	if (head == NULL)
 		head = newNode;
 	else
-
 		combineTrees(head, newNode);
 
 }
 
 template<typename T>
 bool BinomialQueue<T>::deletemin() {
+	BQNode<T> *t = head;
+	BQNode<T> *delNode = head;
+	int min;
 
+	if(head == NULL) {
+		return false;
+	} else {
+		min = head->key;
+	}
+	while(t != NULL) {
+		if(t->key < min){
+			min = t->key;
+			delNode = t;
+		}
+		t = t->right;
+	}
+	t = delNode->first;
+	delNode->left->right = delNode->right;
+	if(delNode->right != NULL)
+		delNode->right->left = delNode->left;
+	if(head == delNode)
+		head = delNode->right;
+	delete delNode;
+
+	BQNode<T> *iter = t->left;
+	while(iter != NULL) {
+		t = iter->right;
+		iter->left = iter;
+		iter->right = NULL;
+
+		combineTrees(head,iter);
+		if(iter == iter->left)
+			break;
+		iter = t;
+	}
+
+	return true;
 }
 
 template<typename T>
@@ -148,6 +183,7 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 	BQNode<T> *iter = t1;
 	while (iter != NULL) {
 		if (iter->order > t2->order) {
+			if(iter->left != t2)
 			t2->left = iter->left;
 			t2->right = iter;
 			iter->left = t2;
@@ -174,10 +210,12 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 						iter->right = NULL;
 				}
 				*/
-				t2->left = iter->first;
+				iter->left = t2->left;
+				t2->left = iter->first->left;
 				t2->left->right = t2;
 				iter->first->left = t2;
 				iter->first->right = t2;
+
 				iter->order = iter->order + 1;
 
 				t2->left = t2;
