@@ -40,11 +40,11 @@ template<typename T>
 void BinomialQueue<T>::insert(T x) {
 	BQNode<T> *newNode = new BQNode<T>(x);
 	newNode->left = newNode;
-	if(head == NULL)
+	if (head == NULL)
 		head = newNode;
 	else
-		newNode = combineTrees(head, newNode);
-	head = newNode;
+
+		combineTrees(head, newNode);
 
 }
 
@@ -61,6 +61,7 @@ void BinomialQueue<T>::levelorder() {
 	q1.enqueue(head);
 	while (!q1.isEmpty()) {
 		BQNode<T> *temp = q1.dequeue();
+
 		std::cout << temp->key;
 		if (temp->right != NULL)
 			q1.enqueue(temp->right);
@@ -76,6 +77,7 @@ void BinomialQueue<T>::levelorder() {
 				if (s->first != NULL)
 					q3.enqueue(s->first);
 			}
+			std::cout << std::endl;
 			while (!q3.isEmpty()) {
 				BQNode<T>* s = q3.dequeue();
 				std::cout << s->key << " ";
@@ -155,24 +157,66 @@ BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 			t2->left = iter->left;
 			t2->right = iter;
 			iter->left = t2;
-			if(iter == head)
+			if (iter == head) {
 				head = t2;
+
+			}
+		t2 = iter;
+
 		} else if (iter->key <= t2->key) {
 			if (t2->order == 0 && iter->order == t2->order) {
 				iter->first = t2;
 				iter->order = iter->order + 1;
-			} else if(iter->order == t2->order){
+				iter = t2;
+			} else if (iter->order == t2->order) {
+				if (t2->right != NULL) {
+					iter->left = t2->left;
+					if (t2->right != iter)
+						iter->right = t2->right;
+					else
+						iter->right = NULL;
+				}
 				t2->left = iter->first;
 				t2->left->right = t2;
 				iter->first->left = t2;
+				iter->first->right = t2;
 				iter->order = iter->order + 1;
+
+				t2->left = t2;
+				t2->right = NULL;
+				if (t2 == head)
+					head = iter;
 			}
+
 		} else {
-			combineTrees(t2, iter);
+			if (t2->order == 0 && iter->order == t2->order) {
+				t2->first = iter;
+				t2->right = iter->right;
+				t2->left = iter->left;
+				t2->order = t2->order + 1;
+
+				if (iter == head)
+					head = t2;
+				if (iter->right != NULL)
+					iter->right->left = t2;
+
+				iter->left = iter;
+				iter->right = NULL;
+				iter = t2;
+			} else if (iter->order == t2->order) {
+				iter->left = t2->first;
+				iter->left->right = iter;
+				iter->left = iter;
+				iter->right = NULL;
+				t2->first->left = iter;
+				t2->order = t2->order + 1;
+				if (iter == head)
+					head = t2;
+			}
+
 		}
 		iter = iter->right;
 	}
-
 
 }
 #endif /* BINOMIALQUEUE_H_ */
