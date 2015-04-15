@@ -21,8 +21,8 @@ public:
 
 private:
 	BQNode<T> *head;
-	BQNode<T> *combineTrees(BQNode<T> *&t1, BQNode<T> *&t2);
-	void merge(BQNode<T> *first, BQNode<T> *second);
+	BQNode<T> *merge(BQNode<T> *&t1, BQNode<T> *&t2);
+	void destroy();
 };
 
 template<typename T>
@@ -33,6 +33,11 @@ BinomialQueue<T>::BinomialQueue() :
 
 template<typename T>
 BinomialQueue<T>::~BinomialQueue() {
+	destroy();
+}
+
+template<typename T>
+void BinomialQueue<T>::destroy() {
 
 }
 
@@ -43,7 +48,7 @@ void BinomialQueue<T>::insert(T x) {
 	if (head == NULL)
 		head = newNode;
 	else
-		combineTrees(head, newNode);
+		merge(head, newNode);
 
 }
 
@@ -87,7 +92,7 @@ bool BinomialQueue<T>::deletemin() {
 		iter->left = iter;
 		iter->right = NULL;
 
-		combineTrees(head, iter);
+		merge(head, iter);
 		iter = temp;
 		if (temp == t)
 			break;
@@ -95,7 +100,7 @@ bool BinomialQueue<T>::deletemin() {
 	}
 	iter->left = iter;
 	iter->right = NULL;
-	combineTrees(head, iter);
+	merge(head, iter);
 	return true;
 }
 
@@ -145,57 +150,7 @@ void BinomialQueue<T>::levelorder() {
 }
 
 template<typename T>
-void BinomialQueue<T>::merge(BQNode<T> *first, BQNode<T> *second) {
-	if (first == second)    // Avoid aliasing problems
-		return;
-
-	BQNode<T> *carry = NULL;
-	BQNode<T> *iter = head;
-	while (iter->right != NULL) {
-		BQNode<T> *iter = iter;
-		BQNode<T> *t2 = second;
-
-		int whichCase = iter == NULL ? 0 : 1;
-		whichCase += t2 == NULL ? 0 : 2;
-		whichCase += carry == NULL ? 0 : 4;
-
-		switch (whichCase) {
-		case 0: /* No trees */
-		case 1: /* Only this */
-			break;
-		case 2: /* Only rhs */
-			iter = t2;
-			second = NULL;
-			break;
-		case 4: /* Only carry */
-			iter = carry;
-			carry = NULL;
-			break;
-		case 3: /* this and rhs */
-			carry = combineTrees(iter, t2);
-			iter = second = NULL;
-			break;
-		case 5: /* this and carry */
-			carry = combineTrees(iter, carry);
-			iter = NULL;
-			break;
-		case 6: /* rhs and carry */
-			carry = combineTrees(t2, carry);
-			iter = NULL;
-			break;
-		case 7: /* All three */
-			iter = carry;
-			carry = combineTrees(iter, t2);
-			iter = NULL;
-			break;
-		}
-	}
-
-	iter = iter->right;
-}
-
-template<typename T>
-BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
+BQNode<T> * BinomialQueue<T>::merge(BQNode<T> *&t1, BQNode<T> *&t2) {
 
 	BQNode<T> *iter = t1;
 	if (t1 == NULL)
