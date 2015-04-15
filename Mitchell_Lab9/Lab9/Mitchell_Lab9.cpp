@@ -46,14 +46,15 @@ int main(int argc, char* argv[]) {
 				cin >> number;
 				bq->insert(number);
 			}  else if (choice == 2) {
-				bq->deletemin();
+				if(!bq->deletemin())
+					cout << endl << "There are no more elements to delete!";
 			} else if (choice == 3) {
 				bq->levelorder();
 			} else {
 				return 0;
 			}
 
-			cout << "\n\n---------------------------------------\n";
+			cout << "\n---------------------------------------\n";
 		}
 		delete bq;
 }

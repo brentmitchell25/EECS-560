@@ -53,47 +53,62 @@ bool BinomialQueue<T>::deletemin() {
 	BQNode<T> *delNode = head;
 	int min;
 
-	if(head == NULL) {
+	if (head == NULL) {
 		return false;
 	} else {
 		min = head->key;
 	}
-	while(t != NULL) {
-		if(t->key < min){
+	while (t != NULL) {
+		if (t->key < min) {
 			min = t->key;
 			delNode = t;
 		}
 		t = t->right;
 	}
+
 	t = delNode->first;
 	delNode->left->right = delNode->right;
-	if(delNode->right != NULL)
+	if (delNode->right != NULL)
 		delNode->right->left = delNode->left;
-	if(head == delNode)
+	if (head == delNode)
 		head = delNode->right;
+	if (delNode->left->left == delNode)
+		delNode->left->left = delNode->left;
 	delete delNode;
+	delNode = NULL;
+
+	if (t == NULL)
+		return true;
 
 	BQNode<T> *iter = t->left;
-	while(iter != NULL) {
-		BQNode<T> *temp = iter->left;
+	BQNode<T> *temp = iter;
+	while (temp != t) {
+		temp = iter->left;
 		iter->left = iter;
 		iter->right = NULL;
 
-		combineTrees(head,iter);
-		if(temp == t)
-			break;
+		combineTrees(head, iter);
 		iter = temp;
-	}
+		if (temp == t)
+			break;
 
+	}
+	iter->left = iter;
+	iter->right = NULL;
+	combineTrees(head, iter);
 	return true;
 }
 
 template<typename T>
 void BinomialQueue<T>::levelorder() {
+	std::cout << "level order:" << std::endl << std::endl;
 	Queue<BQNode<T>*> q1;
 	Queue<BQNode<T>*> q2;
 	Queue<BQNode<T>*> q3;
-	q1.enqueue(head);
+	if(head != NULL)
+		q1.enqueue(head);
+	else
+		std::cout << std::endl << "There is nothing in the queue!";
 	while (!q1.isEmpty()) {
 		BQNode<T> *temp = q1.dequeue();
 
@@ -104,7 +119,7 @@ void BinomialQueue<T>::levelorder() {
 			q2.enqueue(temp->first);
 
 		while (!q2.isEmpty() || !q3.isEmpty()) {
-		std::cout << std::endl;
+			std::cout << std::endl;
 			while (!q2.isEmpty()) {
 				BQNode<T>* s = q2.dequeue();
 				std::cout << s->key << " ";
@@ -113,7 +128,8 @@ void BinomialQueue<T>::levelorder() {
 				if (s->first != NULL)
 					q3.enqueue(s->first);
 			}
-			std::cout << std::endl;
+			if(!q3.isEmpty())
+				std::cout << std::endl;
 			while (!q3.isEmpty()) {
 				BQNode<T>* s = q3.dequeue();
 				std::cout << s->key << " ";
@@ -123,6 +139,7 @@ void BinomialQueue<T>::levelorder() {
 					q2.enqueue(s->first);
 			}
 		}
+		if(!q1.isEmpty())
 		std::cout << std::endl << "---" << std::endl;
 	}
 }
@@ -181,88 +198,98 @@ template<typename T>
 BQNode<T> * BinomialQueue<T>::combineTrees(BQNode<T> *&t1, BQNode<T> *&t2) {
 
 	BQNode<T> *iter = t1;
-	while (iter != NULL) {
-		if (iter->order > t2->order) {
-			if(iter->left != t2)
-			t2->left = iter->left;
-			t2->right = iter;
-			iter->left = t2;
-			if (iter == head) {
-				head = t2;
-
-			}
-		t2 = iter;
-
-		} else if (iter->key <= t2->key) {
-			if (t2->order == 0 && iter->order == t2->order) {
-				iter->first = t2;
-				if(t2->left != t2)
-					iter->left = t2->left;
-				iter->order = iter->order + 1;
-				t2 = iter;
-			} else if (iter->order == t2->order) {
-				/*
-				if (t2->right != NULL) {
-					iter->left = t2->left;
-					if (t2->right != iter)
-						iter->right = t2->right;
-					else
-						iter->right = NULL;
-				}
-				*/
-				iter->left = t2->left;
-				t2->left = iter->first->left;
-				t2->left->right = t2;
-				iter->first->left = t2;
-				iter->first->right = t2;
-
-				iter->order = iter->order + 1;
-
-				t2->right = NULL;
-				if (t2 == head) {
-					head = iter;
-
-				}
-					t2 = iter;
-			}
-
-		}
-		else {
-			if (t2->order == 0 && iter->order == t2->order) {
-				t2->first = iter;
-				t2->right = iter->right;
-				t2->left = iter->left;
-				t2->order = t2->order + 1;
-
-				if (iter == head)
-					head = t2;
-				if (iter->right != NULL)
-					iter->right->left = t2;
-
-				iter->left = iter;
-				iter->right = NULL;
-				iter = t2;
-			} else if (iter->order == t2->order) {
-				iter->left = t2->first->left;
-				iter->left->right = iter;
-				t2->right = iter->right;
-				iter->right = NULL;
-				t2->first->left = iter;
-				t2->order = t2->order + 1;
+	if (t1 == NULL)
+		t1 = t2;
+	else
+		while (iter != NULL) {
+			if (iter->order > t2->order) {
+				if (iter->left != t2)
+					t2->left = iter->left;
+				t2->right = iter;
+				iter->left = t2;
 				if (iter == head) {
 					head = t2;
 
 				}
-									t2 = iter;
-			} else {
-				iter->right = t2;
-				t2->left = iter;
-				head->left = t2;
-			}
+				t2 = iter;
 
+			} else if (iter->key <= t2->key) {
+				if (t2->order == 0 && iter->order == t2->order && iter != t2) {
+					iter->first = t2;
+					if (t2->left != t2)
+						iter->left = t2->left;
+					iter->order = iter->order + 1;
+					t2 = iter;
+				} else if (iter->order == t2->order && iter != t2) {
+					/*
+					 if (t2->right != NULL) {
+					 iter->left = t2->left;
+					 if (t2->right != iter)
+					 iter->right = t2->right;
+					 else
+					 iter->right = NULL;
+					 }
+					 */
+					if (t2->left != t2)
+						iter->left = t2->left;
+					t2->left = iter->first->left;
+					t2->left->right = t2;
+					iter->first->left = t2;
+					//iter->first->right = t2;
+
+					iter->order = iter->order + 1;
+
+					t2->right = NULL;
+					if (t2 == head) {
+						head = iter;
+
+					}
+					t2 = iter;
+				}
+
+			} else {
+				if (t2->order == 0 && iter->order == t2->order) {
+					t2->first = iter;
+					t2->right = iter->right;
+					t2->left = iter->left;
+					t2->order = t2->order + 1;
+
+					if (iter == head)
+						head = t2;
+					if (iter->right != NULL)
+						iter->right->left = t2;
+
+					iter->left = iter;
+					iter->right = NULL;
+					iter = t2;
+				} else if (iter->order == t2->order) {
+					iter->left = t2->first->left;
+					iter->left->right = iter;
+					t2->right = iter->right;
+					iter->right = NULL;
+					t2->first->left = iter;
+					t2->order = t2->order + 1;
+					if (iter == head) {
+						head = t2;
+
+					}
+					t2 = iter;
+				} else {
+					t2->left = iter;
+					t2->right = iter->right;
+
+					if (iter->right == NULL)
+						head->left = t2;
+
+					if (iter->right != NULL)
+						iter->right->left = t2;
+					iter->right = t2;
+
+				}
+
+			}
+			iter = iter->right;
 		}
-		iter = iter->right;
-	}
 
 }
 #endif /* BINOMIALQUEUE_H_ */
