@@ -15,12 +15,15 @@ public:
 	DisjointSet();
 	virtual ~DisjointSet();
 	SetNode<T> *find(SetNode<T> *x);
-	void union(T x, T y);
+	void unionSets(T x, T y);
+
+private:
+	int *set;
 };
 
 template<typename T>
 DisjointSet<T>::DisjointSet() {
-
+	set = new int[10];
 }
 
 template<typename T>
@@ -30,14 +33,14 @@ DisjointSet<T>::~DisjointSet() {
 
 template<typename T>
 SetNode<T> *DisjointSet<T>::find(SetNode<T> *x) {
-	if(x->parent != x)
+	if(x->parent->key != x->key)
 		x->parent = find(x->parent);
 	return x->parent;
 }
 
 template<typename T>
-void DisjointSet<T>::union(T x, T y) {
-
+void DisjointSet<T>::unionSets(T x, T y) {
+	if(set[y->key])
 }
 
 #endif /* DISJOINTSET_H_ */
