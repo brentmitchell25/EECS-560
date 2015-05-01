@@ -11,6 +11,7 @@
 template<typename T>
 class SetNode {
 public:
+	SetNode();
 	SetNode(T k);
 	SetNode(T k, int ra, SetNode<T> *p);
 	T key;
@@ -19,8 +20,13 @@ public:
 };
 
 template<typename T>
+SetNode<T>::SetNode() :
+		key(-1), rank(0), parent(NULL) {
+}
+
+template<typename T>
 SetNode<T>::SetNode(T k) :
-		key(k), rank(0), parent(NULL) {
+		key(k), rank(0), parent(this) {
 }
 
 template<typename T>
