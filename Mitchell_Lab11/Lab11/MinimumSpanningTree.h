@@ -7,12 +7,10 @@
 
 #ifndef MINIMUMSPANNINGTREE_H_
 #define MINIMUMSPANNINGTREE_H_
-#include "MinLeftistHeap.h"
 #include "SkewHeap.h"
 #include "Edge.h"
 #include "DisjointSet.h"
 #include "SetNode.h"
-#include "Set.h"
 #include <limits.h>
 
 class MinimumSpanningTree {
@@ -34,7 +32,6 @@ MinimumSpanningTree::~MinimumSpanningTree() {
 void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 	SkewHeap<Edge> mlh;
 	DisjointSet<int> ds;
-	Set s(dim);
 	for (int i = 0; i < dim; i++) {
 		for (int j = i * dim; j < (i + 1) * dim; j++) {
 			ds.makeSet(i * dim + j);
@@ -64,6 +61,7 @@ void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 }
 
 void MinimumSpanningTree::prim(int adjMat[], int dim) {
+	std::cout << "Prim:";
 	int graph[dim][dim];
 	int min = INT_MAX;
 	for (int i = 0; i < dim; i++) {
@@ -93,61 +91,9 @@ void MinimumSpanningTree::prim(int adjMat[], int dim) {
 			}
 		}
 		visited[v] = true;
-		std::cout << "(" << u << "," << v << ") ";
-	}
-	/*
-	int key[dim];
-	int selected[dim];
-	int main[dim];
-
-	for (int i = 0; i < dim; i++) {
-		key[i] = INT_MAX;
-		selected[i] = false;
-	}
-	std::cout << "Prim: ";
-	key[0] = 0;
-	main[0] = -1;
-	SkewHeap<Edge> mlh;
-	for (int i = 0; i < dim; i++) {
-		for (int j = i * dim; j < (i + 1) * dim; j++) {
-			if (adjMat[j] > 0) {
-				Edge e(i, j % dim, adjMat[j]);
-				mlh.insert(e);
-
-			}
-		}
-	}
-	for (int a = 0; a < dim - 1; a++) {
-		Edge *e = mlh.deletemin();
-		if (e == NULL)
-			break;
-		int u = e->v;
-		selected[u] = true;
-		for (int i = 0; i < dim; i++) {
-			if (graph[u][i] > 0 && selected[i] == false
-					&& graph[u][i] < key[i]) {
-				key[i] = graph[u][i];
-				main[i] = u;
-				//std::cout << "(" << u << "," << i << ") ";
-			}
-
-		}
-	}
-	SkewHeap<Edge> sh;
-	for (int i = 1; i < dim; i++) {
-		Edge e(i, main[i], graph[i][main[i]]);
-		//Edge e(main[i],i,adjMat[main[i] * i + i]);
-		sh.insert(e);
-		std::cout << "(" << std::min(e.v, e.w) << ","
-					<< std::max(e.v, e.w) << ") ";
+		std::cout << "(" << std::min(u,v) << "," << std::max(u,v) << ") ";
 	}
 
-	while (!sh.isEmpty()) {
-		Edge *e = sh.deletemin();
-		//std::cout << "(" << std::min(e->v, e->w) << ","
-		//			<< std::max(e->v, e->w) << ") ";
-	}
-*/
 	std::cout << std::endl;
 }
 

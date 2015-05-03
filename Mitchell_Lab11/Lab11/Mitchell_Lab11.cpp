@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 	getline(myfile, word, '\n');
 	int testCases = atoi(word.c_str());
 	int nodes = 0;
-	MinimumSpanningTree  mst;
+	MinimumSpanningTree mst;
 
 
 	for (int i = 0; i < testCases; i++) {
@@ -31,17 +31,17 @@ int main(int argc, char* argv[]) {
 
 		do {
 			getline(myfile, word, '\n');
-			//mst->insert(atoi(word.c_str()));
 			istringstream iss(word);
 			string s;
 			for (int k = j * nodes; getline(iss, s, ' ');k++) {
-				//cout << s << endl;
 				am[k] = atoi(s.c_str());
 			}
 			j++;
 		} while (j < nodes);
+		cout << "Graph" << i+1 << ":" << endl;
 		mst.kruskal(am,nodes);
 		mst.prim(am,nodes);
+		cout << endl;
 	}
 	myfile.close();
 
