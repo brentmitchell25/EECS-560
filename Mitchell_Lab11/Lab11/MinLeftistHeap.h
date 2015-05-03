@@ -112,7 +112,7 @@ BinaryNode<T>* MinLeftistHeap<T>::merge(BinaryNode<T> *h1, BinaryNode<T> *h2) {
 		return h2;
 	else if (h2 == NULL)
 		return h1;
-	else if (h1->key > h2->key) {
+	else if (h1->key >= h2->key) {
 		swap(h1, h2);
 	}
 	h1->right = merge(h1->right, h2);

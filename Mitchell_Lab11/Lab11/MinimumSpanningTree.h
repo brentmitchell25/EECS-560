@@ -8,6 +8,7 @@
 #ifndef MINIMUMSPANNINGTREE_H_
 #define MINIMUMSPANNINGTREE_H_
 #include "MinLeftistHeap.h"
+#include "SkewHeap.h"
 #include "Edge.h"
 #include "DisjointSet.h"
 #include "SetNode.h"
@@ -20,9 +21,6 @@ public:
 	virtual ~MinimumSpanningTree();
 	void kruskal(int adjMat[], int dim);
 	void prim(int adjMat[], int dim);
-private:
-	int minKey(int key[], bool mstSet[], int dim);
-	void printMST(int parent[], int n, int graph[],int dim);
 };
 
 MinimumSpanningTree::MinimumSpanningTree() {
@@ -34,30 +32,31 @@ MinimumSpanningTree::~MinimumSpanningTree() {
 }
 
 void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
-	MinLeftistHeap<Edge> mlh;
+	SkewHeap<Edge> mlh;
 	DisjointSet<int> ds;
 	Set s(dim);
-	for(int i = 0; i < dim; i++) {
-		for(int j = i * dim; j < (i + 1) * dim; j++) {
+	for (int i = 0; i < dim; i++) {
+		for (int j = i * dim; j < (i + 1) * dim; j++) {
 			ds.makeSet(i * dim + j);
-			if(adjMat[j] > 0) {
-			Edge e(i,j%dim,adjMat[j]);
-			mlh.insert(e);
+			if (adjMat[j] > 0) {
+				Edge e(i, j % dim, adjMat[j]);
+				mlh.insert(e);
 
 			}
 		}
 	}
 
 	std::cout << "Kruskal: ";
-	for(int i = 0; i < dim * dim; i++) {
+	for (int i = 0; i < dim * dim; i++) {
 		Edge *e = mlh.deletemin();
-		if(e == NULL)
+		if (e == NULL)
 			break;
 		SetNode<int> v(e->v);
 		SetNode<int> w(e->w);
-		if(ds.find(&v) != ds.find(&w)) {
-			std:: cout << "(" << e->v << "," << e->w <<") ";
-			ds.unionSets(&v,&w);
+		if (ds.find(&v) != ds.find(&w)) {
+			std::cout << "(" << std::min(e->v, e->w) << ","
+					<< std::max(e->v, e->w) << ") ";
+			ds.unionSets(&v, &w);
 		}
 	}
 	std::cout << std::endl;
@@ -66,79 +65,90 @@ void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 
 void MinimumSpanningTree::prim(int adjMat[], int dim) {
 	int graph[dim][dim];
+	int min = INT_MAX;
+	for (int i = 0; i < dim; i++) {
+		for (int j = i * dim; j < (i + 1) * dim; j++) {
+			graph[i][j % dim] = adjMat[j];
+			if(graph[i][j%dim] == 0)
+				graph[i][j%dim] = min;
+		}
+	}
+
+	bool visited[dim];
+	int u,v;
+	visited[0] = true;
+	for(int counter = 0; counter < dim - 1;counter++) {
+		min = INT_MAX;
 		for(int i = 0; i < dim; i++) {
-		for(int j = i * dim; j < (i + 1) * dim; j++) {
-			graph[i][j] = adjMat[j];
-		}
-		}
-	int parent[dim]; // Array to store constructed MST
-	     int key[dim];   // Key values used to pick minimum weight edge in cut
-	     bool mstSet[dim];  // To represent set of vertices not yet included in MST
-
-	     // Initialize all keys as INFINITE
-	     for (int i = 0; i < dim; i++)
-	        key[i] = INT_MAX, mstSet[i] = false;
-
-	     // Always include first 1st vertex in MST.
-	     key[0] = 0;     // Make key 0 so that this vertex is picked as first vertex
-	     parent[0] = -1; // First node is always root of MST
-
-	     // The MST will have V vertices
-	     for (int count = 0; count < dim-1; count++)
-	     {
-	        // Pick thd minimum key vertex from the set of vertices
-	        // not yet included in MST
-	        int u = minKey(key, mstSet, dim);
-
-	        // Add the picked vertex to the MST Set
-	        mstSet[u] = true;
-
-	        // Update key value and parent index of the adjacent vertices of
-	        // the picked vertex. Consider only those vertices which are not yet
-	        // included in MST
-	        for (int v = 0; v < dim; v++)
-
-	           // graph[u][v] is non zero only for adjacent vertices of m
-	           // mstSet[v] is false for vertices not yet included in MST
-	           // Update the key only if graph[u][v] is smaller than key[v]
-	          if (graph[u][v] && mstSet[v] == false && graph[u][v] <  key[v])
-	             parent[v]  = u, key[v] = graph[u][v];
-	     }
-	     for(int i = 0; i < dim; i ++)
-	    	 for(int j = i * dim; j < (i + 1) * dim; j++)
-	    		 adjMat[j] = graph[i][j%dim];
-	     printf("Prim:");
-   for (int i = 1; i < dim; i++)
-      std::cout << "(" << parent[i] << "," << i << ") ";
-   std::cout << std::endl;
-
-
-}
-
-int MinimumSpanningTree::minKey(int key[], bool mstSet[], int dim)
-{
-   // Initialize min value
-   int min = INT_MAX, min_index;
-
-   for (int v = 0; v < dim; v++)
-     if (mstSet[v] == false && key[v] < min)
-         min = key[v], min_index = v;
-
-   return min_index;
-}
-
-// A utility function to print the constructed MST stored in parent[]
-void MinimumSpanningTree::printMST(int parent[], int n, int graph[],int dim)
-{
-	int adj[dim][dim];
-	for(int i = 0; i < dim; i++) {
-			for(int j = i * dim; j < (i + 1) * dim; j++) {
-				adj[i][j] = graph[j];
+			if(visited[i]) {
+				for(int j = 0; j < dim; j++) {
+					if(!visited[j]) {
+						if(min > graph[i][j]) {
+							min = graph[i][j];
+							u = i;
+							v = j;
+						}
+					}
+				}
 			}
+		}
+		visited[v] = true;
+		std::cout << "(" << u << "," << v << ") ";
+	}
+	/*
+	int key[dim];
+	int selected[dim];
+	int main[dim];
+
+	for (int i = 0; i < dim; i++) {
+		key[i] = INT_MAX;
+		selected[i] = false;
+	}
+	std::cout << "Prim: ";
+	key[0] = 0;
+	main[0] = -1;
+	SkewHeap<Edge> mlh;
+	for (int i = 0; i < dim; i++) {
+		for (int j = i * dim; j < (i + 1) * dim; j++) {
+			if (adjMat[j] > 0) {
+				Edge e(i, j % dim, adjMat[j]);
+				mlh.insert(e);
+
 			}
-   printf("Prim:\n");
-   for (int i = 1; i < dim; i++)
-      std::cout << "(" << parent[i] << "," << i << ") ";
+		}
+	}
+	for (int a = 0; a < dim - 1; a++) {
+		Edge *e = mlh.deletemin();
+		if (e == NULL)
+			break;
+		int u = e->v;
+		selected[u] = true;
+		for (int i = 0; i < dim; i++) {
+			if (graph[u][i] > 0 && selected[i] == false
+					&& graph[u][i] < key[i]) {
+				key[i] = graph[u][i];
+				main[i] = u;
+				//std::cout << "(" << u << "," << i << ") ";
+			}
+
+		}
+	}
+	SkewHeap<Edge> sh;
+	for (int i = 1; i < dim; i++) {
+		Edge e(i, main[i], graph[i][main[i]]);
+		//Edge e(main[i],i,adjMat[main[i] * i + i]);
+		sh.insert(e);
+		std::cout << "(" << std::min(e.v, e.w) << ","
+					<< std::max(e.v, e.w) << ") ";
+	}
+
+	while (!sh.isEmpty()) {
+		Edge *e = sh.deletemin();
+		//std::cout << "(" << std::min(e->v, e->w) << ","
+		//			<< std::max(e->v, e->w) << ") ";
+	}
+*/
+	std::cout << std::endl;
 }
 
 #endif /* MINIMUMSPANNINGTREE_H_ */
