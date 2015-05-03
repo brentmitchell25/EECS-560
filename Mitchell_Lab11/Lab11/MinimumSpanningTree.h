@@ -11,6 +11,7 @@
 #include "Edge.h"
 #include "DisjointSet.h"
 #include "SetNode.h"
+#include "Queue.h"
 #include <limits.h>
 
 class MinimumSpanningTree {
@@ -19,6 +20,8 @@ public:
 	virtual ~MinimumSpanningTree();
 	void kruskal(int adjMat[], int dim);
 	void prim(int adjMat[], int dim);
+private:
+	void printMST(Queue<Edge> &q, int dim);
 };
 
 MinimumSpanningTree::MinimumSpanningTree() {
@@ -44,6 +47,7 @@ void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 	}
 
 	std::cout << "Kruskal: ";
+	Queue<Edge> q;
 	for (int i = 0; i < dim * dim; i++) {
 		Edge *e = mlh.deletemin();
 		if (e == NULL)
@@ -51,17 +55,19 @@ void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 		SetNode<int> v(e->v);
 		SetNode<int> w(e->w);
 		if (ds.find(&v) != ds.find(&w)) {
-			std::cout << "(" << std::min(e->v, e->w) << ","
-					<< std::max(e->v, e->w) << ") ";
+			q.enqueue(*e);
+			//std::cout << "(" << std::min(e->v, e->w) << ","
+			//		<< std::max(e->v, e->w) << ") ";
 			ds.unionSets(&v, &w);
 		}
 	}
-	std::cout << std::endl;
+
+	printMST(q,dim);
 
 }
 
 void MinimumSpanningTree::prim(int adjMat[], int dim) {
-	std::cout << "Prim:";
+	std::cout << "Prim: ";
 	int graph[dim][dim];
 	int min = INT_MAX;
 	for (int i = 0; i < dim; i++) {
@@ -75,6 +81,7 @@ void MinimumSpanningTree::prim(int adjMat[], int dim) {
 	bool visited[dim];
 	int u,v;
 	visited[0] = true;
+	Queue<Edge> q;
 	for(int counter = 0; counter < dim - 1;counter++) {
 		min = INT_MAX;
 		for(int i = 0; i < dim; i++) {
@@ -91,9 +98,23 @@ void MinimumSpanningTree::prim(int adjMat[], int dim) {
 			}
 		}
 		visited[v] = true;
-		std::cout << "(" << std::min(u,v) << "," << std::max(u,v) << ") ";
+		Edge e(u,v,graph[u][v]);
+		q.enqueue(e);
 	}
 
+	printMST(q,dim);
+}
+
+void MinimumSpanningTree::printMST(Queue<Edge> &q, int dim) {
+	if(q.getSize() == dim -1) {
+		while(!q.isEmpty()) {
+			Edge e = q.dequeue();
+			std::cout << "(" << std::min(e.v, e.w) << ","
+					<< std::max(e.v, e.w) << ") ";
+		}
+	} else{
+		std::cout << "No Solution!";
+	}
 	std::cout << std::endl;
 }
 
