@@ -98,8 +98,10 @@ void MinimumSpanningTree::prim(int adjMat[], int dim) {
 			}
 		}
 		visited[v] = true;
+		if(u < dim && v < dim) {
 		Edge e(u,v,graph[u][v]);
 		q.enqueue(e);
+		}
 	}
 
 	printMST(q,dim);
