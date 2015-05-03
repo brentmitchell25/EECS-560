@@ -20,8 +20,8 @@ public:
 
 private:
 	SetNode<T> **set;
-	T size;
-	T length;
+	int size;
+	int length;
 };
 
 template<typename T>
