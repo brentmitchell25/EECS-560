@@ -56,13 +56,11 @@ void MinimumSpanningTree::kruskal(int adjMat[], int dim) {
 		SetNode<int> w(e->w);
 		if (ds.find(&v) != ds.find(&w)) {
 			q.enqueue(*e);
-			//std::cout << "(" << std::min(e->v, e->w) << ","
-			//		<< std::max(e->v, e->w) << ") ";
 			ds.unionSets(&v, &w);
 		}
 	}
 
-	printMST(q,dim);
+	printMST(q, dim);
 
 }
 
@@ -70,51 +68,53 @@ void MinimumSpanningTree::prim(int adjMat[], int dim) {
 	std::cout << "Prim: ";
 	int graph[dim][dim];
 	int min = INT_MAX;
+	bool visited[dim];
+
 	for (int i = 0; i < dim; i++) {
+		visited[i] = false;
 		for (int j = i * dim; j < (i + 1) * dim; j++) {
 			graph[i][j % dim] = adjMat[j];
-			if(graph[i][j%dim] == 0)
-				graph[i][j%dim] = min;
+			if (graph[i][j % dim] == 0)
+				graph[i][j % dim] = min;
 		}
 	}
 
-	bool visited[dim];
-	int u,v;
+	int v = 0, w = 0;
 	visited[0] = true;
 	Queue<Edge> q;
-	for(int counter = 0; counter < dim - 1;counter++) {
+	for (int a = 0; a < dim - 1; a++) {
 		min = INT_MAX;
-		for(int i = 0; i < dim; i++) {
-			if(visited[i]) {
-				for(int j = 0; j < dim; j++) {
-					if(!visited[j]) {
-						if(min > graph[i][j]) {
+		for (int i = 0; i < dim; i++) {
+			if (visited[i]) {
+				for (int j = 0; j < dim; j++) {
+					if (!visited[j]) {
+						if (min > graph[i][j]) {
 							min = graph[i][j];
-							u = i;
-							v = j;
+							v = i;
+							w = j;
 						}
 					}
 				}
 			}
 		}
-		visited[v] = true;
-		if(u < dim && v < dim) {
-		Edge e(u,v,graph[u][v]);
-		q.enqueue(e);
+		visited[w] = true;
+		if (v < dim && w < dim) {
+			Edge e(v, w, graph[v][w]);
+			q.enqueue(e);
 		}
 	}
 
-	printMST(q,dim);
+	printMST(q, dim);
 }
 
 void MinimumSpanningTree::printMST(Queue<Edge> &q, int dim) {
-	if(q.getSize() == dim -1) {
-		while(!q.isEmpty()) {
+	if (q.getSize() == dim - 1) {
+		while (!q.isEmpty()) {
 			Edge e = q.dequeue();
-			std::cout << "(" << std::min(e.v, e.w) << ","
-					<< std::max(e.v, e.w) << ") ";
+			std::cout << "(" << std::min(e.v, e.w) << "," << std::max(e.v, e.w)
+					<< ") ";
 		}
-	} else{
+	} else {
 		std::cout << "No Solution!";
 	}
 	std::cout << std::endl;
